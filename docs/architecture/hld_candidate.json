@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "GuardDengue High-Level Architecture (HLD)",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "runtime-path",
+        "label": "Online safety path",
+        "focus": ["users", "gateway", "emergency_svc", "langgraph", "slm", "verifier", "publisher"],
+        "note": "Follow requests from the user through the screening gate, LangGraph controller, SLM generation, and claim verification."
+      },
+      {
+        "id": "evidence-prep",
+        "label": "Offline evidence ingestion",
+        "focus": ["guidelines", "docling", "qdrant", "neo4j"],
+        "note": "Trace authoritative guidelines through Docling structure extraction into Qdrant and Neo4j."
+      },
+      {
+        "id": "safety-gates",
+        "label": "Dual safety barriers",
+        "focus": ["gateway", "emergency_svc", "verifier", "fallback_svc"],
+        "note": "Highlight immediate emergency bypass and post-generation claim verification."
+      }
+    ]
+  },
+  "components": [
+    { "id": "users", "type": "external", "label": "Users & Patients", "sublabel": "Public Health Chat", "pos": [40, 260], "size": [130, 60] },
+    { "id": "gateway", "type": "cloud", "label": "Screener Gateway", "sublabel": "FastAPI + Regex", "pos": [250, 260], "size": [130, 60], "tag": "Input Screen" },
+    { "id": "emergency_svc", "type": "security", "label": "Emergency Pathway", "sublabel": "Approved templates", "pos": [250, 110], "size": [130, 60], "tag": "Zero Latency" },
+    { "id": "langgraph", "type": "backend", "label": "LangGraph Controller", "sublabel": "Stateful Orchestrator", "pos": [460, 260], "size": [130, 60], "tag": "State Machine" },
+    { "id": "qdrant", "type": "database", "label": "Qdrant Vector DB", "sublabel": "Dense + Sparse BM25", "pos": [460, 420], "size": [130, 60], "tag": "13 Topics" },
+    { "id": "neo4j", "type": "database", "label": "Neo4j Clinical Graph", "sublabel": "Reviewed Rules", "pos": [670, 420], "size": [130, 60], "tag": "Drug Classes" },
+    { "id": "guidelines", "type": "external", "label": "Official Guidelines", "sublabel": "WHO & NVBDCP PDFs", "pos": [40, 420], "size": [130, 60] },
+    { "id": "docling", "type": "cloud", "label": "Docling Engine", "sublabel": "Table & Branch Parser", "pos": [250, 420], "size": [130, 60], "tag": "Structure Aware" },
+    { "id": "slm", "type": "backend", "label": "Local SLM Generator", "sublabel": "Llama 3.1 / Qwen 2.5", "pos": [670, 260], "size": [130, 60], "tag": "Local Compute" },
+    { "id": "verifier", "type": "security", "label": "Verification Gate", "sublabel": "Claim-level Checker", "pos": [880, 260], "size": [130, 60], "tag": "Safety Barrier" },
+    { "id": "fallback_svc", "type": "security", "label": "Safe Abstention", "sublabel": "Clinician Referral Msg", "pos": [880, 110], "size": [130, 60], "tag": "Safe Fallback" },
+    { "id": "publisher", "type": "frontend", "label": "Response Delivery", "sublabel": "Verified Output UI", "pos": [1090, 260], "size": [130, 60], "tag": "Audited Release" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Offline Evidence Preparation Pipeline", "wraps": ["guidelines", "docling", "qdrant", "neo4j"] },
+    { "kind": "security-group", "label": "Online Safety-Gated Orchestration Runtime", "wraps": ["gateway", "emergency_svc", "langgraph", "slm", "verifier", "fallback_svc", "publisher"] }
+  ],
+  "connections": [
+    { "id": "users-to-gateway", "from": "users", "to": "gateway", "label": "user query", "variant": "emphasis" },
+    { "id": "gateway-to-emergency", "from": "gateway", "to": "emergency_svc", "label": "red flags", "variant": "security", "fromSide": "top", "toSide": "bottom" },
+    { "id": "gateway-to-orchestrator", "from": "gateway", "to": "langgraph", "label": "screened query", "variant": "emphasis" },
+    { "id": "guidelines-to-docling", "from": "guidelines", "to": "docling", "label": "PDFs", "variant": "dashed" },
+    { "id": "docling-to-qdrant", "from": "docling", "to": "qdrant", "label": "chunks" },
+    { "id": "docling-to-neo4j", "from": "docling", "to": "neo4j", "label": "triples", "variant": "dashed", "fromSide": "bottom", "toSide": "bottom" },
+    { "id": "orchestrator-to-qdrant", "from": "langgraph", "to": "qdrant", "fromSide": "bottom", "toSide": "top" },
+    { "id": "orchestrator-to-neo4j", "from": "langgraph", "to": "neo4j", "fromSide": "bottom", "toSide": "top" },
+    { "id": "orchestrator-to-slm", "from": "langgraph", "to": "slm", "label": "context", "variant": "emphasis" },
+    { "id": "slm-to-verifier", "from": "slm", "to": "verifier", "label": "draft" },
+    { "id": "verifier-to-fallback", "from": "verifier", "to": "fallback_svc", "label": "unverified", "variant": "security", "fromSide": "top", "toSide": "bottom" },
+    { "id": "verifier-to-publisher", "from": "verifier", "to": "publisher", "label": "verified answer", "variant": "emphasis" },
+    { "id": "fallback-to-publisher", "from": "fallback_svc", "to": "publisher", "label": "referral fallback", "variant": "security", "fromSide": "right", "toSide": "top" }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Dual Safety Guardrails",
+      "items": [
+        "Pre-retrieval emergency screening routes red flags to immediate hospital escalation templates",
+        "Post-generation claim verification compares claims against canonical chunks before release",
+        "Deterministic abstention when evidence is contradictory or insufficient"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Evidence Grounding",
+      "items": [
+        "Offline preparation with Docling preserves clinical table structures and flowchart logic",
+        "Hybrid dense + sparse BM25 retrieval with strict metadata release allowlists",
+        "Neo4j clinical graph models explicit drug contraindications (e.g., NSAID/aspirin avoidance)"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Stateful Orchestration",
+      "items": [
+        "LangGraph manages strict state transitions and bounded one-shot revision loops",
+        "Decoupled from model memory: outputs cite canonical evidence passages",
+        "Separates health education awareness from diagnostic and prescribing boundaries"
+      ]
+    }
+  ]
+}

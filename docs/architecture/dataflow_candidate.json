@@ -1,0 +1,258 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "GuardDengue: End-to-End System Data Flow",
+    "subtitle": "Dual-Track Data Flow: Offline Guideline Curation & Online Safety-Grounded Educational Inference",
+    "output": "docs/architecture/guarddengue_dataflow.html",
+    "viewBox": [1080, 560],
+    "animation": "trace",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "offline-curation",
+        "label": "Offline Evidence Curation",
+        "focus": ["guidelines", "docling_engine", "neo4j_graph", "qdrant_vector"],
+        "note": "Authoritative guidelines parsed via Docling, structured into tables/ASTs, and indexed into Neo4j and Qdrant."
+      },
+      {
+        "id": "online-inference",
+        "label": "Online Retrieval & Generation",
+        "focus": ["patient_query", "safety_screener", "neo4j_graph", "qdrant_vector", "slm_engine", "verification_gate", "response_delivery"],
+        "note": "Screened queries trigger dual retrieval, local SLM drafting, and claim verification before publication."
+      },
+      {
+        "id": "safety-bypass",
+        "label": "Deterministic Safety Bypass",
+        "focus": ["safety_screener", "response_delivery"],
+        "note": "Immediate zero-latency emergency escalation and NSAID avoidance bypass ordinary RAG."
+      }
+    ]
+  },
+  "stages": [
+    { "label": "Sources" },
+    { "label": "Triage & Parsing" },
+    { "label": "Knowledge Bases" },
+    { "label": "Orchestration & SLM" },
+    { "label": "Verification & Delivery" }
+  ],
+  "nodes": [
+    {
+      "id": "guidelines",
+      "type": "external",
+      "label": "Clinical Sources",
+      "sublabel": "WHO & NVBDCP",
+      "stage": 0,
+      "row": 0,
+      "tag": "PDF / HTML"
+    },
+    {
+      "id": "patient_query",
+      "type": "frontend",
+      "label": "User Query",
+      "sublabel": "caregiver query",
+      "stage": 0,
+      "row": 2,
+      "tag": "Inbound"
+    },
+    {
+      "id": "docling_engine",
+      "type": "backend",
+      "label": "Docling Parser",
+      "sublabel": "tables & AST",
+      "stage": 1,
+      "row": 0,
+      "tag": "ETL Ingest"
+    },
+    {
+      "id": "safety_screener",
+      "type": "security",
+      "label": "Safety Screener",
+      "sublabel": "red-flag triage",
+      "stage": 1,
+      "row": 2,
+      "tag": "Gatekeeper"
+    },
+    {
+      "id": "neo4j_graph",
+      "type": "database",
+      "label": "Neo4j Graph",
+      "sublabel": "clinical rules",
+      "stage": 2,
+      "row": 0,
+      "tag": "KG Store"
+    },
+    {
+      "id": "qdrant_vector",
+      "type": "database",
+      "label": "Qdrant Store",
+      "sublabel": "dense & BM25",
+      "stage": 2,
+      "row": 2,
+      "tag": "Vector Index"
+    },
+    {
+      "id": "slm_engine",
+      "type": "backend",
+      "label": "Local SLM",
+      "sublabel": "local generator",
+      "stage": 3,
+      "row": 1,
+      "tag": "Generator"
+    },
+    {
+      "id": "verification_gate",
+      "type": "security",
+      "label": "Verifier Gate",
+      "sublabel": "NLI audit",
+      "stage": 4,
+      "row": 0,
+      "tag": "Safety Guard"
+    },
+    {
+      "id": "response_delivery",
+      "type": "frontend",
+      "label": "Response Client",
+      "sublabel": "verified advice",
+      "stage": 4,
+      "row": 2,
+      "tag": "Outbound"
+    }
+  ],
+  "flows": [
+    {
+      "id": "flow_guidelines",
+      "from": "guidelines",
+      "to": "docling_engine",
+      "label": "guideline docs",
+      "classification": "raw evidence",
+      "variant": "default",
+      "route": "straight",
+      "labelDy": -20
+    },
+    {
+      "id": "flow_docling_neo4j",
+      "from": "docling_engine",
+      "to": "neo4j_graph",
+      "label": "decision logic",
+      "classification": "entity triples",
+      "variant": "emphasis",
+      "route": "straight",
+      "labelDy": -20
+    },
+    {
+      "id": "flow_docling_qdrant",
+      "from": "docling_engine",
+      "to": "qdrant_vector",
+      "label": "13-topic chunks",
+      "classification": "vector chunks",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [[315, 271], [530, 271]],
+      "labelAt": [422, 255]
+    },
+    {
+      "id": "flow_query_ingress",
+      "from": "patient_query",
+      "to": "safety_screener",
+      "label": "user prompt",
+      "classification": "user query",
+      "variant": "default",
+      "route": "straight",
+      "labelDy": 20
+    },
+    {
+      "id": "flow_emergency_bypass",
+      "from": "safety_screener",
+      "to": "response_delivery",
+      "label": "emergency bypass",
+      "classification": "emergency protocol",
+      "variant": "security",
+      "route": "bottom-channel",
+      "labelDy": 30
+    },
+    {
+      "id": "flow_screener_qdrant",
+      "from": "safety_screener",
+      "to": "qdrant_vector",
+      "label": "screened search",
+      "classification": "hybrid query",
+      "variant": "emphasis",
+      "route": "straight",
+      "labelDy": 20
+    },
+    {
+      "id": "flow_neo4j_slm",
+      "from": "neo4j_graph",
+      "to": "slm_engine",
+      "label": "policy rules",
+      "classification": "policy context",
+      "variant": "default",
+      "route": "vertical-channel",
+      "labelDx": 28
+    },
+    {
+      "id": "flow_qdrant_slm",
+      "from": "qdrant_vector",
+      "to": "slm_engine",
+      "label": "evidence chunks",
+      "classification": "evidence context",
+      "variant": "default",
+      "route": "vertical-channel",
+      "labelDx": -28
+    },
+    {
+      "id": "flow_slm_verifier",
+      "from": "slm_engine",
+      "to": "verification_gate",
+      "label": "draft answer",
+      "classification": "audit candidate",
+      "variant": "emphasis",
+      "route": "vertical-channel",
+      "labelDx": 28
+    },
+    {
+      "id": "flow_verifier_delivery",
+      "from": "verification_gate",
+      "to": "response_delivery",
+      "label": "verified advice",
+      "classification": "grounded output",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "route": "straight",
+      "labelAt": [960, 271]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Dual-Track Data Flow",
+      "items": [
+        "Offline: Docling parses guidelines preserving tables, headers, and branch decision logic into Neo4j and Qdrant",
+        "Online: Screened user queries trigger hybrid dense/sparse retrieval and graph policy lookup",
+        "Synthesis: Local SLM drafts educational response with mandatory guideline citations"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Safety & Emergency Controls",
+      "items": [
+        "Safety Screener intercepts severe warning signs and routes immediately to emergency protocol",
+        "NSAID mentions trigger deterministic warning responses without waiting for RAG generation",
+        "Post-generation Claim Verification Gate audits NLI entailment against retrieved sources"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Knowledge Store Architecture",
+      "items": [
+        "Neo4j stores clinical relationships, warning sign hierarchies, and contraindication policies",
+        "Qdrant provides hybrid dense vector + BM25 sparse search with 13-category metadata filtering",
+        "LangGraph manages stateful retrieval, verification gating, and bounded revision loops"
+      ]
+    }
+  ]
+}

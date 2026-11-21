@@ -1,0 +1,13 @@
+.agents/
+.venv/
+/docs/evaluation/
+/docs/meetings/
+/docs/research/
+/walkthrough
+/graphify-out
+/skills-lock.json
+
+/qdrant_storage
+/neo4j_data
+.specify/
+build/

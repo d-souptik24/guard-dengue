@@ -1,0 +1,95 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "GuardDengue LangGraph State Machine Workflow (LLD)",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "educational-path",
+        "label": "Grounded educational path",
+        "focus": ["user_in", "screener", "retrieve_node", "evidence_gate", "draft_node", "verifier_node", "publish_node"],
+        "note": "Follow standard user inquiries through screening, hybrid retrieval, draft generation, and verification."
+      },
+      {
+        "id": "emergency-path",
+        "label": "Zero-latency emergency escalation",
+        "focus": ["user_in", "screener", "urgent_node", "uncertain_abstain"],
+        "note": "Immediate escalation when clinical red-flags are detected and safe abstention for uncertain queries, bypassing generative RAG."
+      },
+      {
+        "id": "verification-repair",
+        "label": "Verification & bounded revision",
+        "focus": ["draft_node", "verifier_node", "revision_node", "abstain_node"],
+        "note": "Isolate the structured claim verification, one-shot repair loop, and fallback abstention."
+      }
+    ]
+  },
+  "lanes": [
+    { "id": "triage_lane", "label": "Deterministic Safety Routes", "variant": "exception" },
+    { "id": "orchestrator", "label": "LangGraph Execution Engine" },
+    { "id": "policies_lane", "label": "Claim Verification & Abstention", "variant": "exception" },
+    { "id": "ui", "label": "Client Delivery Surface" }
+  ],
+  "phases": [
+    { "id": "intake", "label": "Screening & Routing", "fromCol": 0, "toCol": 1 },
+    { "id": "retrieval", "label": "Retrieval & Drafting", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "verification_phase", "label": "Verification & Output", "fromCol": 4, "toCol": 5, "variant": "dashed" }
+  ],
+  "groups": [
+    { "id": "safety_triage", "label": "Safety policy templates", "lane": "triage_lane", "fromCol": 0, "toCol": 3, "variant": "security" },
+    { "id": "verification_loop", "label": "Audited verification loop", "lane": "policies_lane", "fromCol": 3, "toCol": 5, "variant": "emphasis" }
+  ],
+  "mainPath": ["user_in", "screener", "retrieve_node", "evidence_gate", "draft_node", "verifier_node", "publish_node"],
+  "nodes": [
+    { "id": "user_in", "lane": "orchestrator", "col": 0, "type": "external", "label": "User Query", "sublabel": "symptoms / info", "width": 132 },
+    { "id": "screener", "lane": "orchestrator", "col": 1, "type": "backend", "label": "Safety Screener", "sublabel": "pattern & intent filter", "tag": "deterministic", "width": 132 },
+    { "id": "urgent_node", "lane": "triage_lane", "col": 2, "type": "security", "label": "Emergency Alert", "sublabel": "hospital referral", "tag": "bypass RAG", "width": 132 },
+    { "id": "uncertain_abstain", "lane": "triage_lane", "col": 0, "type": "security", "label": "Uncertain Abstain", "sublabel": "cannot classify", "tag": "safe fallback", "width": 132 },
+    { "id": "med_node", "lane": "triage_lane", "col": 3, "type": "security", "label": "Medication Route", "sublabel": "NSAID warning template", "tag": "template only", "width": 132 },
+    { "id": "retrieve_node", "lane": "orchestrator", "col": 2, "type": "database", "label": "Hybrid Retrieval", "sublabel": "dense + sparse BM25", "tag": "13 topics", "width": 132 },
+    { "id": "evidence_gate", "lane": "orchestrator", "col": 3, "type": "security", "label": "Sufficiency Gate", "sublabel": "check evidence coverage", "width": 132 },
+    { "id": "draft_node", "lane": "orchestrator", "col": 4, "type": "backend", "label": "Grounded Draft", "sublabel": "SLM generation", "tag": "context only", "width": 132 },
+    { "id": "revision_node", "lane": "policies_lane", "col": 3, "type": "messagebus", "label": "Bounded Repair", "sublabel": "max 1 retry", "tag": "repair loop", "width": 132 },
+    { "id": "verifier_node", "lane": "policies_lane", "col": 4, "type": "security", "label": "Claim Verifier", "sublabel": "factual consistency", "tag": "audit gate", "width": 132 },
+    { "id": "abstain_node", "lane": "policies_lane", "col": 5, "type": "security", "label": "Safe Abstain", "sublabel": "unverified / conflicting", "tag": "referral fallback", "width": 132 },
+    { "id": "publish_node", "lane": "ui", "col": 5, "type": "frontend", "label": "Deliver Answer", "sublabel": "verified response", "tag": "audited output", "width": 132 }
+  ],
+  "edges": [
+    { "id": "query-intake", "from": "user_in", "to": "screener", "variant": "default" },
+    { "id": "route-urgent", "from": "screener", "to": "urgent_node", "label": "red flags", "variant": "security" },
+    { "id": "route-medication", "from": "screener", "to": "med_node", "label": "drug inquiry", "variant": "security" },
+    { "id": "route-education", "from": "screener", "to": "retrieve_node", "label": "education", "variant": "emphasis" },
+    { "id": "route-uncertain", "from": "screener", "to": "uncertain_abstain", "label": "uncertain", "variant": "security" },
+    { "id": "retrieval-check", "from": "retrieve_node", "to": "evidence_gate", "label": "chunks", "variant": "default" },
+    { "id": "gate-pass", "from": "evidence_gate", "to": "draft_node", "label": "sufficient", "variant": "emphasis" },
+    { "id": "gate-insufficient", "from": "evidence_gate", "to": "abstain_node", "label": "insufficient", "variant": "security" },
+    { "id": "draft-to-verify", "from": "draft_node", "to": "verifier_node", "variant": "emphasis" },
+    { "id": "verify-pass", "from": "verifier_node", "to": "publish_node", "label": "pass", "variant": "emphasis" },
+    { "id": "verify-repair", "from": "verifier_node", "to": "revision_node", "label": "repairable", "variant": "dashed" },
+    { "id": "revision-to-draft", "from": "revision_node", "to": "draft_node", "label": "retry", "variant": "dashed" },
+    { "id": "verify-reject", "from": "verifier_node", "to": "abstain_node", "label": "fail", "variant": "security" }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Deterministic Safety Routes",
+      "items": [
+        "Severe dengue red flags route immediately to emergency escalation templates",
+        "Medication inquiries follow reviewed NSAID/aspirin contraindication policies",
+        "Uncertain queries abstain safely rather than proceeding with generative retrieval",
+        "No probabilistic generation on high-risk clinical pathways"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Bounded Verification Loop",
+      "items": [
+        "Draft responses undergo structured claim-level verification against retrieved chunks",
+        "At most one bounded revision attempt is allowed for minor grounding errors",
+        "Unresolved conflicts or missing evidence trigger deterministic safe abstention"
+      ]
+    }
+  ]
+}
