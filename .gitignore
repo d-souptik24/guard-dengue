@@ -1,13 +1,111 @@
-.agents/
+# ==============================================================================
+# GuardDengue — Root Git Exclusion Policy
+# Grounded in Architecture Review v2 (Docling + Qdrant + Neo4j + LangGraph)
+# ==============================================================================
+
+# --- Secrets & Environment Credentials ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.crt
+*.token
+*.pfx
+*.p12
+
+# --- Node Packages & Frontend Artifacts ---
+node_modules/
+dist/
+dist-ssr/
+*.tsbuildinfo
+
+# --- Python & Backend Virtual Environments ---
 .venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# --- Python Bytecode & Runtime Caches ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# --- Large Model Checkpoints & Machine Learning Weights ---
+# (Prevent pushing >100MB files that break GitHub git-push)
+*.bin
+*.safetensors
+*.pt
+*.pth
+*.onnx
+*.gguf
+*.llamafile
+models/checkpoints/
+hf_cache/
+.cache/
+
+# --- Storage, Vector Engines & Multimodal Extraction Scrap ---
+# (Docling table/picture extraction crops and database persistent states)
+extraction/
+qdrant_storage/
+neo4j_data/
+*.sqlite
+*.sqlite3
+*.db
+*.rdb
+
+# --- Machine-Local Agent Runtimes & Working State ---
+.agents/
+.specify/
+skills-lock.json
+graphify-out/
+walkthrough/
+
+# --- Editor & OS Metadata ---
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.sw[po]
+*~
+
+# --- Internal Documentation (Restricted) ---
 /docs/evaluation/
 /docs/meetings/
-/docs/research/
-/walkthrough
-/graphify-out
-/skills-lock.json
+# NOTE: /docs/research/ is deliberately TRACKED per project requirements.
 
-/qdrant_storage
-/neo4j_data
-.specify/
-build/
+# --- Logs & Test Traces ---
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+eval_results/

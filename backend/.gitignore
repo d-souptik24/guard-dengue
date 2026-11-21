@@ -1,0 +1,55 @@
+# ==============================================================================
+# GuardDengue — Backend Service Exclusion Policy
+# FastAPI + LangGraph + Docling + Qdrant + Neo4j
+# ==============================================================================
+
+# --- Service Environment & Secrets ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.token
+
+# --- Python Virtual Environments ---
+venv/
+.venv/
+env/
+ENV/
+
+# --- Bytecode & Caches ---
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# --- Local ML Weights & Model Checkpoints ---
+models/
+checkpoints/
+hf_cache/
+*.bin
+*.safetensors
+*.pt
+*.pth
+*.onnx
+*.gguf
+*.llamafile
+
+# --- Docling Multimodal Extraction & Storage Engines ---
+extraction/
+data/
+storage/
+qdrant_storage/
+neo4j_data/
+*.sqlite
+*.sqlite3
+*.db
+
+# --- Logs, Traces & Evaluation Results ---
+logs/
+*.log
+eval_results/

@@ -1,5 +1,22 @@
-# Logs
-logs
+# ==============================================================================
+# GuardDengue — Frontend Client Workspace Exclusion Policy
+# React 19 + Vite 8 + Tailwind CSS v4 + TypeScript
+# ==============================================================================
+
+# --- Frontend Environment Secrets ---
+.env
+.env.*
+!.env.example
+*.local
+
+# --- Node Packages & Build Outputs ---
+node_modules/
+dist/
+dist-ssr/
+*.tsbuildinfo
+
+# --- Package Manager Logs ---
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -7,16 +24,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-*.tsbuildinfo
-
-# Editor directories and files
+# --- Editor & OS Metadata ---
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
 *.suo
 *.ntvs*

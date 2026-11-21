@@ -185,13 +185,16 @@ The retrieval index covers official WHO, NVBDCP/NCVBDC, and ICMR guidance across
 
 ## Academic Context & Supervision
 
-- **Academic Affiliation:** Academic project, A.K.C.S.I.T, University of Calcutta
+- **Academic Affiliation:** A. K. Choudhury School of Information Technology (A.K.C.S.I.T.), University of Calcutta
 - **Target Initiative:** Proposed for the Department of Health & Family Welfare, Government of West Bengal
-- **Research Supervision:**
-  - **Dr. Wazib** — Research Supervision (LLM/SLM & RAG Systems Architecture)
-  - **Dr. Jhilam** — Research Supervision (Health Data Analytics & Clinical Evaluation)
+- **Faculty Supervisor:**
+  - **Prof. (Dr.) Amlan Chakraborty** — Director & Professor, A.K.C.S.I.T., University of Calcutta
+- **Research Co-Supervisors & Mentors:**
+  - **Dr. Wazib** — Research Mentorship (LLM/SLM & RAG Systems Architecture)
+  - **Dr. Jhilam** — Research Mentorship (Health Data Analytics & Clinical Evaluation)
 
-### Project Contributors
+### Student Researchers & Project Contributors
+*Undergraduate Researchers (B.Tech in Information Technology, A.K.C.S.I.T., University of Calcutta)*
 
 - [Souptik Dutta](https://github.com/d-souptik24) (`@d-souptik24`)
 - [Ayan Chakraborty](https://github.com/Ayan-chakraborty255) (`@Ayan-chakraborty255`)
