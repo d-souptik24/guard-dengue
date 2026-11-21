@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none" role="img" aria-label="GuardDengue health shield">
+  <!-- Outer Shield Silhouette: Amber #B45309 with Ochre #92400E Border -->
+  <path
+    d="M32 4 C48 4 56 12 56 26 C56 42 38 54 32 60 C26 54 8 42 8 26 C8 12 16 4 32 4 Z"
+    fill="#B45309"
+    stroke="#92400E"
+    stroke-width="2"
+    stroke-linejoin="round"
+  />
+
+  <!-- Inner Canvas Inset: Warm Off-White #FDFBF7 -->
+  <path
+    d="M32 9 C44 9 50 16 50 27 C50 40 36 50 32 54 C28 50 14 40 14 27 C14 16 20 9 32 9 Z"
+    fill="#FDFBF7"
+  />
+
+  <!-- Clinical Cross: Deep Teal #0F766E -->
+  <g fill="#0F766E">
+    <!-- Vertical Crossbar -->
+    <rect x="29" y="15" width="6" height="18" rx="1.5" />
+    <!-- Horizontal Crossbar -->
+    <rect x="23" y="21" width="18" height="6" rx="1.5" />
+  </g>
+
+  <!-- Health & Life Heart Motif: Vibrant Teal #14B8A6 -->
+  <path
+    d="M32 34 C30.5 31.5 27 30 24 31 C20.5 32.2 19.5 36 21.5 39.5 C24 43.5 32 49 32 49 C32 49 40 43.5 42.5 39.5 C44.5 36 43.5 32.2 40 31 C37 30 33.5 31.5 32 34 Z"
+    fill="#14B8A6"
+  />
+</svg>
