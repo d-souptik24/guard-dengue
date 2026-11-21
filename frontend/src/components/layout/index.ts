@@ -1,10 +1,4 @@
-/**
- * GuardDengue — Layout: AppShell
- *
- * Root layout wrapping every page.
- * Contains: Government header bar, language switcher,
- * inspector mode toggle, and main content area.
- *
- * TODO: Implement in Session 3 frontend sprint.
- */
 export { default } from './AppShell'
+export { default as AppShell } from './AppShell'
+export { default as GIGWToolbar } from './GIGWToolbar'
+export { default as GovFooter } from './GovFooter'

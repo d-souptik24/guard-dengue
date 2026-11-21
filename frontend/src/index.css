@@ -108,22 +108,28 @@ body {
   letter-spacing: 0.01em;
 }
 
-/* ─── High Contrast Mode Overrides (WCAG 2.1 AAA Target: 7:1+) ─────────────── */
+/* ─── High Contrast Mode Overrides (GIGW 3.0 & WCAG 2.1 AAA Target: 7:1+) ──── */
 [data-contrast="high"] {
-  --color-wb-canvas: #FFFFFF !important;
-  --color-wb-surface: #FFFFFF !important;
-  --color-wb-text-main: #000000 !important;
-  --color-wb-text-muted: #1A1A1A !important;
-  --color-wb-border: #000000 !important;
-  --color-zone-emergency: #9B1C1C !important;
-  --color-zone-medication: #78350F !important;
-  --color-zone-verified: #064E3B !important;
-  --color-wb-amber-700: #78350F !important;
+  --color-wb-canvas: #000000 !important;
+  --color-wb-surface: #121212 !important;
+  --color-wb-border: #FFFF00 !important;
+  --color-wb-text-main: #FFFFFF !important;
+  --color-wb-text-muted: #FFFF00 !important;
+  --color-wb-amber-700: #FFFF00 !important;
+  --color-zone-emergency: #FF5555 !important;
+  --color-zone-emergency-bg: #220000 !important;
+  --color-zone-emergency-border: #FFFF00 !important;
+  --color-zone-medication: #FFFF00 !important;
+  --color-zone-medication-bg: #221100 !important;
+  --color-zone-medication-border: #FFFF00 !important;
+  --color-zone-verified: #00FFCC !important;
+  --color-zone-verified-bg: #002211 !important;
+  --color-zone-verified-border: #FFFF00 !important;
 }
 
 [data-contrast="high"] :focus-visible {
-  outline: 3px solid #000000 !important;
-  outline-offset: 3px !important;
+  outline: 3px solid #FFFF00 !important;
+  outline-offset: 2px !important;
 }
 
 /* ─── Utility helpers ───────────────────────────────────────────────────────── */

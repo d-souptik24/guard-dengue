@@ -10,7 +10,7 @@ import type { KnowledgeTopic, AppLanguage } from '@/types'
 export const API_BASE = '/api'
 export const ENDPOINTS = {
   chat:     `${API_BASE}/chat`,
-  stream:   '/stream/chat',
+  stream:   `${API_BASE}/chat/stream`,
   health:   `${API_BASE}/health`,
   session:  `${API_BASE}/session`,
 } as const

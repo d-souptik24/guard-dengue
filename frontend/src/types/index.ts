@@ -69,10 +69,23 @@ export interface GuardDengueResponse {
   verdict: VerdictType
   answer: string               // The final published (verified) response
   evidence: EvidenceChunk[]    // Retrieved and used evidence chunks
-  matched_rules: string[]      // Deterministic safety rules that fired
-  verification_score: number   // NLI claim verification score [0, 1]
+  evidence_ok?: boolean
   attempts: number             // Number of draft-revision cycles (max 2)
-  final_output: string
+  is_fallback?: boolean
+  safety_disclaimer?: string   // Statutory medical disclaimer
+  telephony_action?: {
+    recommended_call: string
+    helpline: string
+  }
+  matched_rules?: string[]      // Deterministic safety rules that fired
+  verification_score?: number   // NLI claim verification score [0, 1]
+  final_output?: string
+  metrics?: {
+    total_latency_ms: number
+    zone2_screener_ms: number
+    model_generation_ms: number
+    nli_verification_ms: number
+  }
   // Inspector mode fields (for clinical trace panel)
   extracted_claims?: string[]
   kg_triples?: KGTriple[]
@@ -89,12 +102,31 @@ export interface KGTriple {
 
 // ─── SSE Streaming Events (LangGraph state updates) ──────────────────────────
 
-/** Individual SSE event streamed from /stream endpoint */
+/** 8 Canonical LangGraph lifecycle events from api_contract.md §4 + legacy fallback types */
+export type SSEEventType =
+  | 'screener_triage'
+  | 'template_bypass'
+  | 'retrieval_complete'
+  | 'revision_triggered'
+  | 'verification_audit'
+  | 'answer_publish'
+  | 'answer_abstain'
+  | 'stream_error'
+  | 'route'
+  | 'evidence'
+  | 'draft'
+  | 'verdict'
+  | 'final'
+  | 'error'
+
+/** Individual SSE event streamed from POST /api/chat/stream endpoint */
 export interface StreamEvent {
-  type: 'route' | 'evidence' | 'draft' | 'verdict' | 'final' | 'error'
-  node: string              // LangGraph node name: screener | retriever | draft | verifier
-  payload: Partial<GuardDengueResponse> | { message: string }
-  timestamp: string
+  event?: SSEEventType
+  type?: SSEEventType
+  node?: string              // LangGraph node name: screener | retriever | draft | verifier
+  data?: any
+  payload?: Partial<GuardDengueResponse> | { message: string } | any
+  timestamp?: string
 }
 
 // ─── UI State Types ───────────────────────────────────────────────────────────
