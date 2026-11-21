@@ -14,5 +14,6 @@
 
 export { default as EvidenceBadge }     from './EvidenceBadge'
 export { default as CitationCard }      from './CitationCard'
+export { default as CitationAccordion } from './CitationAccordion'
 export { default as EvidenceDrawer }    from './EvidenceDrawer'
 export { default as VerificationBadge } from './VerificationBadge'

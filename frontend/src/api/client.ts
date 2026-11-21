@@ -28,7 +28,7 @@ export async function sendMessage(req: ChatRequest): Promise<GuardDengueResponse
   return res.json() as Promise<GuardDengueResponse>
 }
 
-// ─── SSE Streaming Chat (for Inspector Mode) ──────────────────────────────────
+// ─── SSE Streaming Chat (POST /api/chat/stream with fetch & ReadableStream) ────
 
 export function streamMessage(
   req: ChatRequest,
@@ -36,34 +36,90 @@ export function streamMessage(
   onError: (error: Error) => void,
   onDone: () => void,
 ): () => void {
-  const url = new URL(ENDPOINTS.stream, window.location.origin)
-  url.searchParams.set('message', req.message)
-  if (req.session_id) url.searchParams.set('session_id', req.session_id)
-  if (req.language)   url.searchParams.set('language', req.language)
+  const controller = new AbortController()
 
-  const es = new EventSource(url.toString())
-
-  es.addEventListener('message', (e) => {
+  async function startStream() {
     try {
-      const parsed = JSON.parse(e.data) as StreamEvent
-      onEvent(parsed)
-      if (parsed.type === 'final') {
-        es.close()
-        onDone()
+      const res = await fetch(ENDPOINTS.stream, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'text/event-stream',
+        },
+        body: JSON.stringify(req),
+        signal: controller.signal,
+      })
+
+      if (!res.ok) {
+        throw new Error(`SSE stream error: ${res.status} ${res.statusText}`)
       }
-    } catch {
-      onError(new Error('Failed to parse SSE event'))
-      es.close()
+
+      if (!res.body) {
+        throw new Error('Response body is null')
+      }
+
+      const reader = res.body.getReader()
+      const decoder = new TextDecoder()
+      let buffer = ''
+
+      while (true) {
+        const { value, done } = await reader.read()
+        if (done) break
+
+        buffer += decoder.decode(value, { stream: true })
+        const blocks = buffer.split('\n\n')
+        buffer = blocks.pop() || ''
+
+        for (const block of blocks) {
+          if (!block.trim()) continue
+          let eventType = ''
+          let eventData = ''
+
+          for (const line of block.split('\n')) {
+            if (line.startsWith('event:')) {
+              eventType = line.slice(6).trim()
+            } else if (line.startsWith('data:')) {
+              eventData = line.slice(5).trim()
+            }
+          }
+
+          if (eventData) {
+            try {
+              const parsedData = JSON.parse(eventData)
+              const streamEvt: StreamEvent = {
+                event: (eventType as any) || parsedData.event,
+                type: (eventType as any) || parsedData.type,
+                data: parsedData.data || parsedData,
+                payload: parsedData.payload || parsedData,
+                node: parsedData.node,
+                timestamp: parsedData.timestamp || new Date().toISOString(),
+              }
+              onEvent(streamEvt)
+              if (
+                eventType === 'answer_publish' ||
+                eventType === 'answer_abstain' ||
+                parsedData.type === 'final'
+              ) {
+                onDone()
+                return
+              }
+            } catch {
+              // Skip non-JSON SSE heartbeat/ping lines
+            }
+          }
+        }
+      }
+      onDone()
+    } catch (err: any) {
+      if (err.name !== 'AbortError') {
+        onError(err instanceof Error ? err : new Error(String(err)))
+      }
     }
-  })
+  }
 
-  es.addEventListener('error', () => {
-    onError(new Error('SSE connection error'))
-    es.close()
-  })
+  startStream()
 
-  // Return cleanup function
-  return () => es.close()
+  return () => controller.abort()
 }
 
 // ─── Health Check ─────────────────────────────────────────────────────────────
