@@ -1,0 +1,150 @@
+@import "tailwindcss";
+
+/* ─── Google Fonts: Bilingual Typography ───────────────────────────────────── */
+/* Inter (English) + Hind Siliguri (বাংলা) — loaded via index.html <link>      */
+
+/* ─── GuardDengue Design Tokens (Tailwind v4 CSS-first config) ─────────────── */
+@theme {
+  /* West Bengal Government Health Portal Palette (WCAG 2.1 AA Compliant) */
+  --color-wb-amber-50:    #FFFBEB;
+  --color-wb-amber-100:   #FEF3C7;
+  --color-wb-amber-200:   #FDE68A;
+  --color-wb-amber-500:   #F59E0B;  /* Amber accent (dark-ink only) */
+  --color-wb-amber-600:   #D97706;  /* Medium amber */
+  --color-wb-amber-700:   #B45309;  /* Primary action bg (white text AA pass) */
+  --color-wb-ochre-800:   #92400E;  /* Deep ochre — hover/pressed/borders */
+  --color-wb-ochre-900:   #78350F;  /* Deepest ochre */
+
+  --color-wb-blue-700:    #1D4ED8;  /* Evidence L1 guideline */
+  --color-wb-blue-800:    #1E40AF;
+  --color-wb-blue-900:    #1E3A8A;
+
+  --color-wb-canvas:      #FDFBF7;  /* Warm off-white app canvas */
+  --color-wb-surface:     #FFFFFF;  /* Card & container surface */
+  --color-wb-border:      #E2E8F0;  /* Standard border */
+  --color-wb-text-main:   #0F172A;  /* Primary text (high contrast) */
+  --color-wb-text-muted:  #475569;  /* Secondary text */
+
+  /* Safety zone colors — directly map to GuardDengue LangGraph architecture zones */
+  --color-zone-emergency:        #B91C1C;  /* Emergency crimson (WCAG AA pass) */
+  --color-zone-emergency-bg:     #FEF2F2;
+  --color-zone-emergency-border:  #F87171;
+
+  --color-zone-medication:        #B45309;  /* NSAID intercept warning amber */
+  --color-zone-medication-bg:     #FFFBEB;
+  --color-zone-medication-border: #FCD34D;
+
+  --color-zone-verified:          #0F766E;  /* Verified claim output deep teal */
+  --color-zone-verified-bg:       #F0FDFA;
+  --color-zone-verified-border:   #99F6E4;
+
+  --color-zone-uncertain:         #6B7280;  /* Abstain / uncertain slate */
+  --color-zone-uncertain-bg:      #F9FAFB;
+  --color-zone-uncertain-border:  #CBD5E1;
+
+  /* Evidence level badge colors — match clinical metadata taxonomy */
+  --color-evidence-l1:    #1D4ED8;  /* Level 1: Global Clinical Guideline */
+  --color-evidence-l1-bg: #EFF6FF;
+  --color-evidence-l2:    #7C3AED;  /* Level 2: National Protocol */
+  --color-evidence-l2-bg: #F5F3FF;
+  --color-evidence-l3:    #6B7280;  /* Level 3: Operational Standard */
+  --color-evidence-l3-bg: #F9FAFB;
+
+  /* Typography — aliased for backward compatibility & semantic usage */
+  --font-sans:     'Inter', 'Hind Siliguri', system-ui, -apple-system, sans-serif;
+  --font-english:  var(--font-sans);
+  --font-bengali:  'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+  --font-mono:     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Border radius — preserved utilities + semantic aliases */
+  --radius-sm:         4px;
+  --radius-md:         8px;
+  --radius-lg:         12px;
+  --radius-xl:         16px;
+  --radius-full:       9999px;
+  --radius-container:  var(--radius-lg);
+  --radius-control:    var(--radius-md);
+
+  /* Shadows — refreshed banner shadow RGBA to match emergency crimson #B91C1C */
+  --shadow-card:   0 1px 3px 0 rgba(0,0,0,0.08), 0 1px 2px -1px rgba(0,0,0,0.04);
+  --shadow-banner: 0 4px 12px 0 rgba(185, 28, 28, 0.15);
+  --shadow-badge:  0 1px 2px 0 rgba(0,0,0,0.05);
+
+  /* Animation */
+  --animate-pulse-emergency: pulse-emergency 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ─── Emergency pulse animation ────────────────────────────────────────────── */
+@keyframes pulse-emergency {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.75; }
+}
+
+/* ─── Base resets (Tailwind preflight handles box-sizing) ───────────────────── */
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-wb-text-main);
+  background-color: var(--color-wb-canvas);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ─── Bengali language typography & rhythm ─────────────────────────────────── */
+:lang(bn) {
+  font-family: var(--font-bengali);
+}
+
+:lang(bn) p,
+:lang(bn) .prose-bengali,
+:lang(bn) .chat-message-content {
+  line-height: 1.75;
+  letter-spacing: 0.01em;
+}
+
+/* ─── High Contrast Mode Overrides (WCAG 2.1 AAA Target: 7:1+) ─────────────── */
+[data-contrast="high"] {
+  --color-wb-canvas: #FFFFFF !important;
+  --color-wb-surface: #FFFFFF !important;
+  --color-wb-text-main: #000000 !important;
+  --color-wb-text-muted: #1A1A1A !important;
+  --color-wb-border: #000000 !important;
+  --color-zone-emergency: #9B1C1C !important;
+  --color-zone-medication: #78350F !important;
+  --color-zone-verified: #064E3B !important;
+  --color-wb-amber-700: #78350F !important;
+}
+
+[data-contrast="high"] :focus-visible {
+  outline: 3px solid #000000 !important;
+  outline-offset: 3px !important;
+}
+
+/* ─── Utility helpers ───────────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ─── Accessibility: Reduced Motion ────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
