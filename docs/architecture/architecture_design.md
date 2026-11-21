@@ -3,7 +3,7 @@
 > **Document Type:** Concept Architecture Specification (HLD, LLD, and System Data Flow)  
 > **Target Audience:** Supervisory Review (Dr. Wazib) & Engineering Implementation  
 > **Status:** Proposal & Concept Review (Fully Synchronized with Plan Version 2)  
-> **Corpus / Source Reference:** [GuardDengue-Architecture-Review.md (Version 2)](file:///d:/USER%28dutta%29/PROJECT_SOUPTIK_DUTTA/guard-dengue/plan/version_2/GuardDengue-Architecture-Review.md)  
+> **Corpus / Source Reference:** [GuardDengue-Architecture-Review.md (Version 1)](file:///d:/USER%28dutta%29/PROJECT_SOUPTIK_DUTTA/guard-dengue/plan/version_1/GuardDengue-Architecture-Review.md)  
 > **Interactive Visual Artifacts (Showcase Quality Profile — 9/9 Validated):**
 > - [High-Level Design (HLD) Diagram](file:///d:/USER%28dutta%29/PROJECT_SOUPTIK_DUTTA/guard-dengue/docs/architecture/guarddengue_hld.html)
 > - [Low-Level Design (LLD) State Machine Diagram](file:///d:/USER%28dutta%29/PROJECT_SOUPTIK_DUTTA/guard-dengue/docs/architecture/guarddengue_lld_workflow.html)
