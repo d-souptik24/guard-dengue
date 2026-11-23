@@ -22,6 +22,7 @@ import CitationAccordion from '@/components/evidence/CitationAccordion'
 import EmergencyDialog from '@/components/safety/EmergencyDialog'
 import MedicationWarning from '@/components/safety/MedicationWarning'
 import SafeAbstainCard from '@/components/safety/SafeAbstainCard'
+import MarkdownContent from './MarkdownContent'
 import { useSettings } from '@/store/settings'
 
 export interface MessageBubbleProps {
@@ -81,9 +82,10 @@ export default function MessageBubble({ message, className = '' }: MessageBubble
           <VerificationBadge verdict="template_bypass" />
         </div>
 
-        <p className="text-xs sm:text-sm leading-relaxed text-red-950 font-medium whitespace-pre-wrap">
-          {message.content}
-        </p>
+        <MarkdownContent
+          content={message.content}
+          className="text-red-950 font-medium"
+        />
 
         {/* Emergency Call Action & Dialog Trigger */}
         <div className="pt-2 flex flex-wrap items-center gap-2.5">
@@ -130,9 +132,10 @@ export default function MessageBubble({ message, className = '' }: MessageBubble
           <VerificationBadge verdict="template_bypass" />
         </div>
 
-        <p className="text-xs sm:text-sm leading-relaxed text-amber-950 whitespace-pre-wrap">
-          {message.content}
-        </p>
+        <MarkdownContent
+          content={message.content}
+          className="text-amber-950"
+        />
 
         {/* Medication Dialog Trigger */}
         <div className="pt-2 flex flex-wrap items-center gap-2.5">
@@ -171,9 +174,10 @@ export default function MessageBubble({ message, className = '' }: MessageBubble
       </div>
 
       {/* Answer Content */}
-      <div className="text-xs sm:text-sm leading-relaxed text-slate-800 whitespace-pre-wrap font-sans">
-        {message.content}
-      </div>
+      <MarkdownContent
+        content={message.content}
+        className="text-slate-800"
+      />
 
       {/* Citation Accordion */}
       {evidence.length > 0 && <CitationAccordion evidence={evidence} />}
