@@ -2,6 +2,7 @@
 GuardDengue — Central Application Settings & Environment Configuration
 """
 from pathlib import Path
+from typing import Literal
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
@@ -18,10 +19,27 @@ class Settings(BaseSettings):
     DATA_DIR: Path = BACKEND_ROOT / "data"
     STATIC_DIR: Path = BACKEND_ROOT / "static"
     
-    # Storage paths
-    SQLITE_DB_PATH: Path = DATA_DIR / "guarddengue_chunks.db"
-    QDRANT_STORAGE_DIR: Path = DATA_DIR / "qdrant_storage"
-    POLICY_FILE_PATH: Path = DATA_DIR / "safety_policy_v0.1-dev.json"
+    # Knowledge pipeline storage paths (prioritizing verified extracted stores)
+    KNOWLEDGE_DIR: Path = BACKEND_ROOT / "knowledge_pipeline" / "extracted"
+    SQLITE_DB_PATH: Path = (
+        KNOWLEDGE_DIR / "guarddengue_chunks.db"
+        if (KNOWLEDGE_DIR / "guarddengue_chunks.db").exists()
+        else DATA_DIR / "guarddengue_chunks.db"
+    )
+    QDRANT_STORAGE_DIR: Path = (
+        KNOWLEDGE_DIR / "qdrant_local"
+        if (KNOWLEDGE_DIR / "qdrant_local").exists()
+        else DATA_DIR / "qdrant_storage"
+    )
+    POLICY_FILE_PATH: Path = (
+        KNOWLEDGE_DIR / "safety_policy_v0.1-dev.json"
+        if (KNOWLEDGE_DIR / "safety_policy_v0.1-dev.json").exists()
+        else DATA_DIR / "safety_policy_v0.1-dev.json"
+    )
+    QDRANT_COLLECTION: str = "guarddengue_v0.1-dev"
+    RETRIEVAL_MODE: Literal["dense", "hybrid"] = "dense"
+    HYBRID_PREFETCH_LIMIT: int = 20
+    HYBRID_DENSE_OOS_FLOOR: float = 0.67
     
     # Neo4j configuration (optional with automatic local fallback)
     NEO4J_URI: str = "bolt://localhost:7687"

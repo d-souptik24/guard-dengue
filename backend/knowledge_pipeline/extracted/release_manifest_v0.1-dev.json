@@ -1,0 +1,11 @@
+{
+  "corpus_release": "v0.1-dev",
+  "qdrant_collection": "guarddengue_v0.1-dev",
+  "retrieval_mode": "dense",
+  "embedding_model": "BAAI/bge-small-en-v1.5",
+  "manifest_sha256": "cc71167cc2255d7cd5958d16c76b630ed894af007843f62dc42674ad2eb0a9ed",
+  "safety_policy_sha256": "10bc393f33771f3df1a61a428d4103ca761bebe65b64b8ba80f210a97595df66",
+  "approved_chunks": 425,
+  "indexed_vectors": 425,
+  "status": "active"
+}

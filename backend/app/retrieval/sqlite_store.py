@@ -20,7 +20,7 @@ def get_parent_chunk(parent_id: str) -> dict[str, Any] | None:
         cursor = conn.cursor()
         cursor.execute(
             """
-            SELECT parent_id, doc_id, section_path, title, level, text, token_count, corpus_release
+            SELECT parent_id, doc_id, section_path, page_start, page_end, text, metadata_json, review_status
             FROM parent_chunks
             WHERE parent_id = ?
             """,
@@ -28,7 +28,13 @@ def get_parent_chunk(parent_id: str) -> dict[str, Any] | None:
         )
         row = cursor.fetchone()
         if row:
-            return dict(row)
+            data = dict(row)
+            if data.get("metadata_json"):
+                try:
+                    data["metadata"] = json.loads(data["metadata_json"])
+                except Exception:
+                    data["metadata"] = {}
+            return data
     return None
 
 def get_child_chunk(chunk_id: str) -> dict[str, Any] | None:
@@ -37,9 +43,9 @@ def get_child_chunk(chunk_id: str) -> dict[str, Any] | None:
         cursor = conn.cursor()
         cursor.execute(
             """
-            SELECT chunk_id, parent_id, doc_id, chunk_type, element_type, text,
-                   section_path, page_start, page_end, review_status, reviewed_by,
-                   superseded_by, chunk_content_hash, metadata_json
+            SELECT chunk_id, parent_id, doc_id, element_type, section_path, page_start, page_end,
+                   artifact_ref, artifact_path, text, metadata_json, review_status,
+                   chunk_content_hash, reviewed_at, superseded_by
             FROM child_chunks
             WHERE chunk_id = ?
             """,

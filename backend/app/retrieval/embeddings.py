@@ -11,6 +11,7 @@ import os
 import re
 
 _FAST_EMBED_MODEL = None
+_SPARSE_BM25_MODEL = None
 
 STOPWORDS = {
     "what", "is", "the", "for", "and", "in", "of", "to", "a", "an", "on", "with",
@@ -20,7 +21,7 @@ STOPWORDS = {
 
 def _get_fastembed_model():
     global _FAST_EMBED_MODEL
-    if _FAST_EMBED_MODEL is None and os.environ.get("USE_FASTEMBED", "0") == "1":
+    if _FAST_EMBED_MODEL is None and os.environ.get("USE_FASTEMBED", "1") == "1":
         try:
             from fastembed import TextEmbedding
             _FAST_EMBED_MODEL = TextEmbedding(model_name="BAAI/bge-small-en-v1.5")
@@ -57,6 +58,35 @@ def get_dense_embedding(text: str, dim: int = 384) -> list[float]:
 
     norm = math.sqrt(sum(x * x for x in vec)) or 1.0
     return [round(x / norm, 6) for x in vec]
+
+def _get_sparse_bm25_model():
+    """Lazily initializes and caches FastEmbed Qdrant/bm25 sparse model."""
+    global _SPARSE_BM25_MODEL
+    if _SPARSE_BM25_MODEL is None:
+        if os.environ.get("USE_FASTEMBED", "1") != "1":
+            raise RuntimeError(
+                "Qdrant/bm25 sparse embedding requires USE_FASTEMBED=1; hybrid mode failed closed."
+            )
+        try:
+            from fastembed import SparseTextEmbedding
+            _SPARSE_BM25_MODEL = SparseTextEmbedding(model_name="Qdrant/bm25")
+        except Exception as exc:
+            raise RuntimeError(f"Failed to load Qdrant/bm25 SparseTextEmbedding: {exc}") from exc
+    return _SPARSE_BM25_MODEL
+
+
+def get_sparse_bm25_embedding(text: str, is_query: bool = True) -> dict[str, list]:
+    """
+    Generates FastEmbed Qdrant/bm25 sparse vector compatible with indexed Qdrant IDF vectors.
+    Fails closed (raises RuntimeError) if FastEmbed is unavailable rather than falling back to MD5.
+    """
+    model = _get_sparse_bm25_model()
+    vec = next(model.query_embed([text])) if is_query else next(model.embed([text]))
+    return {
+        "indices": vec.indices.tolist(),
+        "values": vec.values.tolist(),
+    }
+
 
 def get_sparse_embedding(text: str) -> dict[str, list]:
     """
