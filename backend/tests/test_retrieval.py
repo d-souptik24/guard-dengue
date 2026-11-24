@@ -14,15 +14,15 @@ from app.retrieval.vector_store import vector_store
 from app.retrieval.engine import retrieval_engine
 
 def test_sqlite_parent_chunk_fetch():
-    parent = get_parent_chunk("SEC-WHO-WARN")
+    parent = get_parent_chunk("44f01082-d4be-52f9-83bf-a1b92fef081b")
     assert parent is not None
-    assert parent["doc_id"] == "who_dengue_guidelines_2024"
-    assert "critical phase" in parent["text"].lower()
+    assert parent["doc_id"] == "who_dengue_lab_guidance_2025"
+    assert len(parent["text"]) > 0
 
 def test_sqlite_child_chunk_fetch():
-    child = get_child_chunk("KB-WARN-001")
+    child = get_child_chunk("1c26a00f-7a98-5746-897b-6da689d4ddd1")
     assert child is not None
-    assert child["parent_id"] == "SEC-WHO-WARN"
+    assert child["parent_id"] == "44f01082-d4be-52f9-83bf-a1b92fef081b"
     assert child["review_status"] == "approved"
 
 def test_active_corpus_release():

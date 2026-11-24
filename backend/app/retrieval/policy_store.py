@@ -27,24 +27,64 @@ class PolicyStore:
 
     @property
     def corpus_release(self) -> str:
-        return self._policy_data.get("corpus_release", settings.CORPUS_RELEASE)
+        if isinstance(self._policy_data, dict):
+            return self._policy_data.get("corpus_release", settings.CORPUS_RELEASE)
+        elif isinstance(self._policy_data, list) and len(self._policy_data) > 0:
+            return self._policy_data[0].get("corpus_release", settings.CORPUS_RELEASE)
+        return settings.CORPUS_RELEASE
 
     def get_rules_for_condition(self, condition: str = "dengue") -> list[dict[str, Any]]:
         """Returns all safety rules applicable to the given condition."""
-        rules = self._policy_data.get("rules", [])
-        return rules
+        if isinstance(self._policy_data, list):
+            return self._policy_data
+        return self._policy_data.get("rules", [])
 
     def is_contraindicated(self, drug_name: str) -> dict[str, Any] | None:
         """
         Checks if a drug name matches any policy contraindication.
         Returns the rule with rationale and alternatives if matched.
         """
-        drug_name_lower = drug_name.lower()
-        for rule in self.get_rules_for_condition("dengue"):
+        drug_name_lower = drug_name.strip().lower()
+        
+        # Resolve candidate names from registry if available
+        search_names = {drug_name_lower}
+        try:
+            from app.safety.drug_registry import NSAID_DATABASE, INDIAN_FDC_DATABASE
+            for d in NSAID_DATABASE:
+                if (
+                    drug_name_lower == d["id"].lower()
+                    or drug_name_lower == d["generic_name"].lower()
+                    or any(b.lower() == drug_name_lower for b in d["brand_names"])
+                ):
+                    search_names.add(d["id"].lower())
+                    search_names.add(d["generic_name"].lower())
+            for fdc in INDIAN_FDC_DATABASE:
+                if (
+                    drug_name_lower == fdc["fdc_id"].lower()
+                    or drug_name_lower == fdc["brand_name"].lower()
+                    or any(a.lower() == drug_name_lower for a in fdc["aliases"])
+                ):
+                    search_names.add(fdc["nsaid_constituent"].lower())
+                    for c in fdc["constituents"]:
+                        search_names.add(c.lower())
+        except Exception:
+            pass
+
+        for raw_rule in self.get_rules_for_condition("dengue"):
+            rule = dict(raw_rule)
+            rule["action"] = rule.get("action", rule.get("relation", "AVOID_IN"))
+            if "safe_alternatives" not in rule:
+                rule["safe_alternatives"] = ["Paracetamol"]
+
             for member in rule.get("drug_members", []):
-                if member["id"] == drug_name_lower or member["name"].lower() == drug_name_lower:
+                m_id = str(member.get("id", "")).lower()
+                m_name = str(member.get("name", "")).lower()
+                aliases = [str(a).lower() for a in member.get("aliases", [])]
+                candidate_names = {m_id, m_name}.union(aliases)
+
+                if search_names & candidate_names:
                     return rule
-                if any(alias in drug_name_lower for alias in member.get("aliases", [])):
+                if any(any(s in c or c in s for c in candidate_names) for s in search_names):
                     return rule
         return None
 
