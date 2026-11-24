@@ -12,11 +12,13 @@
  * - Official civic footer with statutory non-diagnostic disclaimer
  */
 import { type ReactNode } from 'react'
+import { NavLink } from 'react-router-dom'
 import { useSettings } from '@/store/settings'
 import GIGWToolbar from './GIGWToolbar'
 import GovFooter from './GovFooter'
 import TelephonyBadge from '@/components/citizen/TelephonyBadge'
-import { Activity } from 'lucide-react'
+import InspectorPanel from '@/components/inspector/InspectorPanel'
+import { Activity, MessageSquare, BookOpen, Info } from 'lucide-react'
 
 export interface AppShellProps {
   children: ReactNode
@@ -97,6 +99,54 @@ export default function AppShell({ children }: AppShellProps) {
         </div>
       </header>
 
+      {/* 2.5. Primary Navigation Strip */}
+      <nav aria-label={isBn ? 'প্রধান নেভিগেশন' : 'Primary Navigation'} className="w-full bg-white border-b border-wb-border shadow-2xs">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 flex items-center gap-1 sm:gap-2">
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) =>
+              `min-h-[44px] inline-flex items-center gap-2 px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold border-b-2 transition-colors ${
+                isActive
+                  ? 'border-wb-amber-700 text-wb-amber-800 bg-amber-50/60'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
+              }`
+            }
+          >
+            <MessageSquare className="w-4 h-4" aria-hidden="true" />
+            <span>{isBn ? 'সহায়তা ডেস্ক' : 'Sahayata Desk'}</span>
+          </NavLink>
+
+          <NavLink
+            to="/guides"
+            className={({ isActive }) =>
+              `min-h-[44px] inline-flex items-center gap-2 px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold border-b-2 transition-colors ${
+                isActive
+                  ? 'border-wb-amber-700 text-wb-amber-800 bg-amber-50/60'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
+              }`
+            }
+          >
+            <BookOpen className="w-4 h-4" aria-hidden="true" />
+            <span>{isBn ? 'ক্লিনিক্যাল নির্দেশিকা' : 'Clinical Guides'}</span>
+          </NavLink>
+
+          <NavLink
+            to="/about"
+            className={({ isActive }) =>
+              `min-h-[44px] inline-flex items-center gap-2 px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold border-b-2 transition-colors ${
+                isActive
+                  ? 'border-wb-amber-700 text-wb-amber-800 bg-amber-50/60'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
+              }`
+            }
+          >
+            <Info className="w-4 h-4" aria-hidden="true" />
+            <span>{isBn ? 'সম্পর্কে ও গভর্ন্যান্স' : 'About & Governance'}</span>
+          </NavLink>
+        </div>
+      </nav>
+
       {/* 3. Primary Content (Above-the-fold workspace) */}
       <main id="main-content" tabIndex={-1} className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6 focus:outline-none">
         {children}
@@ -104,6 +154,9 @@ export default function AppShell({ children }: AppShellProps) {
 
       {/* 4. Official Government Footer */}
       <GovFooter />
+
+      {/* 5. Supervisor Clinical Inspector Panel (Available across all routes) */}
+      <InspectorPanel />
     </div>
   )
 }

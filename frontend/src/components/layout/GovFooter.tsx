@@ -28,7 +28,13 @@ export default function GovFooter({ className = '' }: GovFooterProps) {
           <ul role="list" className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-wb-text-main font-medium">
             <li>
               <Link to="/" className="hover:text-wb-amber-700 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-wb-amber-700 p-1">
-                {isBn ? 'হোম' : 'Home'}
+                {isBn ? 'সহায়তা ডেস্ক' : 'Sahayata Desk'}
+              </Link>
+            </li>
+            <li aria-hidden="true" className="text-wb-border">|</li>
+            <li>
+              <Link to="/guides" className="hover:text-wb-amber-700 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-wb-amber-700 p-1">
+                {isBn ? 'ক্লিনিক্যাল নির্দেশিকা' : 'Clinical Guides'}
               </Link>
             </li>
             <li aria-hidden="true" className="text-wb-border">|</li>
