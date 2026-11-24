@@ -11,7 +11,7 @@ import { useEffect, useRef } from 'react'
 import type { ChatMessage } from '@/types'
 import MessageBubble from './MessageBubble'
 import TypingIndicator from './TypingIndicator'
-import { ShieldCheck, MessageSquareHeart } from 'lucide-react'
+import { ShieldCheck } from 'lucide-react'
 import { useSettings } from '@/store/settings'
 
 export interface ChatWindowProps {
@@ -46,28 +46,28 @@ export default function ChatWindow({
       ref={scrollRef}
       role="status"
       aria-live="polite"
-      className={`flex-1 overflow-y-auto space-y-4 pr-1 scroll-smooth focus:outline-none ${className}`}
+      className={`flex-1 overflow-y-auto space-y-4 pr-1 pt-2 scroll-smooth focus:outline-none ${className}`}
       tabIndex={0}
       aria-label={isBn ? 'কথোপকথনের বার্তা তালিকা' : 'Conversation message stream'}
     >
       {messages.length === 0 ? (
-        <div className="h-full min-h-[280px] flex flex-col items-center justify-center text-center p-6 text-slate-500 space-y-3">
-          <div className="w-12 h-12 rounded-2xl bg-amber-50 text-wb-amber-700 border border-amber-200 flex items-center justify-center">
-            <MessageSquareHeart className="w-6 h-6" aria-hidden="true" />
+        <div className="h-full min-h-[300px] flex flex-col items-center justify-center text-center p-6 text-slate-500 space-y-3.5 my-auto">
+          <div className="w-12 h-12 rounded-2xl bg-amber-50 text-wb-amber-700 border border-amber-200 flex items-center justify-center shadow-2xs">
+            <ShieldCheck className="w-6 h-6" aria-hidden="true" />
           </div>
-          <div className="space-y-1 max-w-sm">
-            <h3 className="font-bold text-sm text-slate-800">
-              {isBn ? 'স্বাস্থ্য ডেঙ্গু সহায়তা ডেস্কে স্বাগতম' : 'Welcome to Dengue Health Sahayata'}
+          <div className="space-y-2 max-w-md">
+            <h3 className="font-bold text-sm sm:text-base text-slate-800 tracking-tight">
+              {isBn ? 'পশ্চিমবঙ্গ ডেঙ্গু সহায়তা ডেস্কে স্বাগতম' : 'Welcome to Dengue Health Sahayata Desk'}
             </h3>
             <p className="text-xs text-slate-600 leading-relaxed">
               {isBn
-                ? 'ডেঙ্গুর উপসর্গ, জ্বর কমার সময়ের বিপদ সংকেত বা ওষুধ সতর্কতা সম্পর্কে নিচে প্রশ্ন করুন।'
-                : 'Ask questions about dengue warning signs, paracetamol guidance, or hydration protocols below.'}
+                ? 'গার্ডডেঙ্গু একটি স্বাস্থ্য সচেতনতামূলক শিক্ষা নির্দেশিকা, যা বিশ্ব স্বাস্থ্য সংস্থা (WHO) ও আইসিএমআর (ICMR) নির্দেশিকার ওপর ভিত্তি করে তৈরি। এটি কোনো চিকিৎসকের বিকল্প বা প্রেসক্রিপশন নয়।'
+                : 'GuardDengue provides evidence-grounded health awareness aligned with WHO 2024 and ICMR protocols. It helps identify warning signs and safe care, but does not replace professional clinical diagnosis.'}
             </p>
           </div>
           <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-teal-800 bg-teal-50 px-3 py-1 rounded-full border border-teal-200">
             <ShieldCheck className="w-3.5 h-3.5 text-teal-600" aria-hidden="true" />
-            <span>WHO & ICMR 2024 Verified</span>
+            <span>WHO 2024 • ICMR Guidelines Grounded</span>
           </div>
         </div>
       ) : (

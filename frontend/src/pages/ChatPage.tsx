@@ -8,103 +8,22 @@
  * - Live POST /api/chat/stream integration with resilient local fallback for offline/demo evaluation
  * - Supervisor Clinical Inspector drawer for Dr. Wazib and viva examiners
  */
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import type { ChatMessage, GuardDengueResponse, StreamEvent } from "@/types";
 import { useSettings } from "@/store/settings";
 import EmergencyRibbon from "@/components/citizen/EmergencyRibbon";
 import CitizenBentoGrid from "@/components/citizen/CitizenBentoGrid";
-import InspectorPanel from "@/components/inspector/InspectorPanel";
 import { ChatWindow, ChatInput, QuickPrompts } from "@/components/chat";
 import { streamMessage } from "@/api/client";
 
 export default function ChatPage() {
   const { settings } = useSettings();
   const isBn = settings.language === "bn";
+  const location = useLocation();
+  const initialPromptHandled = useRef(false);
 
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      id: "msg-seed-1",
-      role: "user",
-      language: settings.language,
-      content: isBn
-        ? "জ্বর কমে যাওয়ার পর কি ডেঙ্গু রোগীর বিপদ কেটে যায়? কী কী লক্ষণ খেয়াল রাখতে হবে?"
-        : "Why should someone keep watching for warning signs after their fever starts to go down?",
-      timestamp: "10:30 AM",
-    },
-    {
-      id: "msg-seed-2",
-      role: "assistant",
-      language: settings.language,
-      timestamp: "10:30 AM",
-      content: isBn
-        ? `না, জ্বর কমলেই ডেঙ্গু রোগীর বিপদ কাটে না। প্রকৃতপক্ষে, ডেঙ্গুর সবচেয়ে ঝুঁকিপূর্ণ পর্যায় হলো 'সংকটপূর্ণ পর্যায়' (Critical Phase), যা সাধারণত ৩য় থেকে ৭ম দিনে জ্বর কমার সময় (Defervescence) শুরু হয়।
-
-এই সময়ে রক্তনালী থেকে প্লাজমা লিকেজ (Plasma Leakage) হওয়ার সর্বোচ্চ ঝুঁকি থাকে, যা দ্রুত ডেঙ্গু শক সিন্ড্রোম (Dengue Shock Syndrome) ঘটাতে পারে।
-
-যে সতর্ক সংকেত দেখলে অবিলম্বে নিকটবর্তী হাসপাতালে জরুরি বিভাগে যাবেন:
-১. পেটে তীব্র ও ক্রমাগত ব্যথা
-২. ঘন ঘন বা অনবরত বমি
-৩. মাড়ি, নাক বা ত্বক দিয়ে রক্তপাত
-৪. অতিরিক্ত দুর্বলতা, নিস্তেজ ভাব বা অস্থিরতা
-৫. হাত-পা ঠান্ডা ও ঘর্মাক্ত হয়ে যাওয়া
-
-ওষুধের সতর্কতা: ডেঙ্গু সন্দেহে কোনো অবস্থাতেই আইবুপ্রোফেন, অ্যাসপিরিন বা ডাইক্লোফেনাক সেবন করবেন না। কেবলমাত্র প্যারাসিটামল চিকিৎসকের পরামর্শ অনুযায়ী গ্রহণ করা যেতে পারে।`
-        : `No, the danger does not pass when fever drops. In fact, the most dangerous phase of dengue is the "critical phase," which typically begins during defervescence (Days 3–7) as the fever subsides.
-
-During this window, increased capillary permeability can cause plasma leakage, fluid accumulation, hemoconcentration, and severe drop in platelets, potentially progressing to Dengue Shock Syndrome.
-
-Immediate emergency hospital evaluation is vital if any of the following Warning Signs occur:
-1. Severe, localized abdominal pain or tenderness
-2. Persistent vomiting (unable to retain fluids orally)
-3. Mucosal bleeding (bleeding gums, epistaxis, or melena/black stools)
-4. Cold, clammy skin, rapid weak pulse, or extreme restlessness/lethargy
-5. Respiratory distress (fast or labored breathing)
-
-Medication Precaution: Never take NSAIDs (such as ibuprofen, aspirin, naproxen, or diclofenac) for fever or body ache during suspected dengue, as their antiplatelet effects substantially elevate gastrointestinal bleeding risks. Only paracetamol may be used under clinical guidance.`,
-      response: {
-        session_id: "seed-session",
-        route: "education",
-        verdict: "pass",
-        answer: "",
-        evidence: [
-          {
-            id: "chunk-who-2024",
-            score: 0.94,
-            category: "Warning signs",
-            content:
-              "Critical phase begins at defervescence (days 3–7). Plasma leakage occurs during this period and may lead to shock. Close monitoring of warning signs is essential.",
-            metadata: {
-              source: "WHO Clinical Management Guidelines 2024",
-              publication_date: "2024-08-10",
-              evidence_level: "Level 1 (Global Clinical Practice Guideline)",
-              topic: ["Warning signs", "Emergency guidance"],
-              chunk_id: "KB-WARN-001",
-              corpus_release: "2026.09-v2-approved",
-            },
-          },
-          {
-            id: "chunk-icmr-2024",
-            score: 0.89,
-            category: "Medication safety",
-            content:
-              "Aspirin and NSAIDs are strictly contraindicated in dengue fever due to danger of gastrointestinal bleeding and platelet dysfunction.",
-            metadata: {
-              source: "ICMR National Guidelines for Dengue",
-              publication_date: "2024-11-12",
-              evidence_level: "Level 2 (National Public Health Protocol)",
-              topic: ["Medication safety"],
-              chunk_id: "KB-MED-002",
-              corpus_release: "2026.09-v2-approved",
-            },
-          },
-        ],
-        verification_score: 0.94,
-        attempts: 0,
-        safety_disclaimer:
-          "এটি স্বাস্থ্য সচেতনতামূলক শিক্ষা নির্দেশিকা, চিকিৎসকের বিকল্প নয়।",
-      },
-    },
-  ]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   const [isLoading, setIsLoading] = useState(false);
   const [loadingStage, setLoadingStage] = useState<"screening" | "verifying">(
@@ -302,6 +221,16 @@ Medication Precaution: Never take NSAIDs (such as ibuprofen, aspirin, naproxen, 
     setIsLoading(false);
   };
 
+  // Consume forwarded prompt from GuidesPage or external navigation
+  useEffect(() => {
+    const forwardPrompt = (location.state as { initialPrompt?: string })?.initialPrompt;
+    if (forwardPrompt && !initialPromptHandled.current) {
+      initialPromptHandled.current = true;
+      window.history.replaceState({}, document.title);
+      handleSendMessage(forwardPrompt);
+    }
+  }, [location.state]);
+
   return (
     <div className="w-full">
       {/* ─── 1. Full-Width Zone 2 Emergency Defervescence Advisory ───── */}
@@ -365,9 +294,6 @@ Medication Precaution: Never take NSAIDs (such as ibuprofen, aspirin, naproxen, 
           <ChatInput onSendMessage={handleSendMessage} disabled={isLoading} />
         </section>
       </div>
-
-      {/* ─── 3. Dr. Wazib's Inspector Mode Drawer ───────────────────── */}
-      <InspectorPanel />
     </div>
   );
 }
