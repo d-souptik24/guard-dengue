@@ -109,10 +109,10 @@ export default function CitizenBentoGrid({
     >
       <div className="flex items-center justify-between mb-2 px-1">
         <h3 className="text-xs font-bold uppercase tracking-wider text-wb-text-muted">
-          {isBn ? 'নাগরিক স্বাস্থ্য নির্দেশনা' : 'Quick Health Guides'}
+          {isBn ? 'নাগরিক স্বাস্থ্য নির্দেশিকা' : 'Clinical Health Guides'}
         </h3>
         <span className="text-[11px] text-wb-text-muted hidden sm:inline">
-          {isBn ? '১-ট্যাপ নির্দেশিকা' : '1-Tap Question'}
+          {isBn ? 'ক্লিনিক্যাল নির্দেশিকা বিষয়' : 'Clinical Reference Topics'}
         </span>
       </div>
 

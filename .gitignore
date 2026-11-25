@@ -69,9 +69,14 @@ hf_cache/
 .cache/
 
 # --- Storage, Vector Engines & Multimodal Extraction Scrap ---
-# (Docling table/picture extraction crops and database persistent states)
+# (Docling intermediate document.json, crops, tables, and local DB locks)
 extraction/
+**/extracted/*/
+**/extracted/*.png
+**/extracted/*.html
+**/extracted/*.lock
 qdrant_storage/
+qdrant_local/
 neo4j_data/
 *.sqlite
 *.sqlite3
@@ -84,6 +89,8 @@ neo4j_data/
 skills-lock.json
 graphify-out/
 walkthrough/
+.ua/
+.understand-anything/
 
 # --- Editor & OS Metadata ---
 .DS_Store
