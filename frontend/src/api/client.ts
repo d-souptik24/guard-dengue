@@ -5,29 +5,27 @@
  * Supports both one-shot JSON responses and SSE streaming for real-time
  * LangGraph state-node updates (used by the Inspector Mode panel).
  */
-import type { GuardDengueResponse, StreamEvent } from "@/types";
-import { ENDPOINTS } from "@/constants";
+import type { GuardDengueResponse, StreamEvent } from '@/types'
+import { ENDPOINTS } from '@/constants'
 
 // ─── One-Shot Chat Request ────────────────────────────────────────────────────
 
 export interface ChatRequest {
-  message: string;
-  session_id?: string;
-  language?: "en" | "bn";
+  message: string
+  session_id?: string
+  language?: 'en' | 'bn'
 }
 
-export async function sendMessage(
-  req: ChatRequest,
-): Promise<GuardDengueResponse> {
+export async function sendMessage(req: ChatRequest): Promise<GuardDengueResponse> {
   const res = await fetch(ENDPOINTS.chat, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(req),
-  });
+  })
   if (!res.ok) {
-    throw new Error(`GuardDengue API error: ${res.status} ${res.statusText}`);
+    throw new Error(`GuardDengue API error: ${res.status} ${res.statusText}`)
   }
-  return res.json() as Promise<GuardDengueResponse>;
+  return res.json() as Promise<GuardDengueResponse>
 }
 
 // ─── SSE Streaming Chat (POST /api/chat/stream with fetch & ReadableStream) ────
@@ -38,110 +36,95 @@ export function streamMessage(
   onError: (error: Error) => void,
   onDone: () => void,
 ): () => void {
-  const controller = new AbortController();
+  const controller = new AbortController()
 
   async function startStream() {
     try {
       const res = await fetch(ENDPOINTS.stream, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          Accept: "text/event-stream",
+          'Content-Type': 'application/json',
+          'Accept': 'text/event-stream',
         },
         body: JSON.stringify(req),
         signal: controller.signal,
-      });
+      })
 
       if (!res.ok) {
-        throw new Error(`SSE stream error: ${res.status} ${res.statusText}`);
+        throw new Error(`SSE stream error: ${res.status} ${res.statusText}`)
       }
 
       if (!res.body) {
-        throw new Error("Response body is null");
+        throw new Error('Response body is null')
       }
 
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-
-      const processBlock = (block: string) => {
-        if (!block.trim()) return;
-        let eventType = "";
-        let eventData = "";
-
-        for (const line of block.split("\n")) {
-          const trimmedLine = line.trim();
-          if (trimmedLine.startsWith("event:")) {
-            eventType = trimmedLine.slice(6).trim();
-          } else if (trimmedLine.startsWith("data:")) {
-            eventData = trimmedLine.slice(5).trim();
-          }
-        }
-
-        if (eventData) {
-          try {
-            const parsedData = JSON.parse(eventData);
-            const streamEvt: StreamEvent = {
-              event: (eventType as any) || parsedData.event,
-              type: (eventType as any) || parsedData.type,
-              data: parsedData.data || parsedData,
-              payload: parsedData.payload || parsedData,
-              node: parsedData.node,
-              timestamp: parsedData.timestamp || new Date().toISOString(),
-            };
-            onEvent(streamEvt);
-            if (
-              eventType === "answer_publish" ||
-              eventType === "answer_abstain" ||
-              parsedData.type === "final"
-            ) {
-              onDone();
-              return true;
-            }
-          } catch {
-            // Skip non-JSON SSE heartbeat/ping lines
-          }
-        }
-        return false;
-      };
+      const reader = res.body.getReader()
+      const decoder = new TextDecoder()
+      let buffer = ''
 
       while (true) {
-        const { value, done } = await reader.read();
-        if (done) break;
+        const { value, done } = await reader.read()
+        if (done) break
 
-        buffer += decoder.decode(value, { stream: true });
-        // Normalize CRLF to LF so split reliably handles both \r\n\r\n and \n\n
-        buffer = buffer.replace(/\r\n/g, "\n");
-        const blocks = buffer.split("\n\n");
-        buffer = blocks.pop() || "";
+        buffer += decoder.decode(value, { stream: true })
+        const blocks = buffer.split('\n\n')
+        buffer = blocks.pop() || ''
 
         for (const block of blocks) {
-          const isTerminal = processBlock(block);
-          if (isTerminal) return;
+          if (!block.trim()) continue
+          let eventType = ''
+          let eventData = ''
+
+          for (const line of block.split('\n')) {
+            if (line.startsWith('event:')) {
+              eventType = line.slice(6).trim()
+            } else if (line.startsWith('data:')) {
+              eventData = line.slice(5).trim()
+            }
+          }
+
+          if (eventData) {
+            try {
+              const parsedData = JSON.parse(eventData)
+              const streamEvt: StreamEvent = {
+                event: (eventType as any) || parsedData.event,
+                type: (eventType as any) || parsedData.type,
+                data: parsedData.data || parsedData,
+                payload: parsedData.payload || parsedData,
+                node: parsedData.node,
+                timestamp: parsedData.timestamp || new Date().toISOString(),
+              }
+              onEvent(streamEvt)
+              if (
+                eventType === 'answer_publish' ||
+                eventType === 'answer_abstain' ||
+                parsedData.type === 'final'
+              ) {
+                onDone()
+                return
+              }
+            } catch {
+              // Skip non-JSON SSE heartbeat/ping lines
+            }
+          }
         }
       }
-
-      // Process any trailing block left in the buffer when stream terminates
-      if (buffer.trim()) {
-        processBlock(buffer.replace(/\r\n/g, "\n"));
-      }
-
-      onDone();
+      onDone()
     } catch (err: any) {
-      if (err.name !== "AbortError") {
-        onError(err instanceof Error ? err : new Error(String(err)));
+      if (err.name !== 'AbortError') {
+        onError(err instanceof Error ? err : new Error(String(err)))
       }
     }
   }
 
-  startStream();
+  startStream()
 
-  return () => controller.abort();
+  return () => controller.abort()
 }
 
 // ─── Health Check ─────────────────────────────────────────────────────────────
 
 export async function healthCheck(): Promise<{ status: string }> {
-  const res = await fetch(ENDPOINTS.health);
-  return res.json() as Promise<{ status: string }>;
+  const res = await fetch(ENDPOINTS.health)
+  return res.json() as Promise<{ status: string }>
 }

@@ -10,7 +10,7 @@
  * Meets WCAG 2.1 AA 2.5.5 touch target size (min-h-[44px]).
  */
 import { QUICK_PROMPTS } from '@/constants'
-import { HelpCircle } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
 import { useSettings } from '@/store/settings'
 
 export interface QuickPromptsProps {
@@ -31,8 +31,8 @@ export default function QuickPrompts({
   return (
     <div className={`space-y-1.5 ${className}`}>
       <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-600 px-1">
-        <HelpCircle className="w-3.5 h-3.5 text-wb-amber-700 shrink-0" aria-hidden="true" />
-        <span>{isBn ? 'সাধারণ ডেঙ্গু প্রশ্নসমূহ:' : 'Common Dengue Questions:'}</span>
+        <Sparkles className="w-3.5 h-3.5 text-amber-600 shrink-0" aria-hidden="true" />
+        <span>{isBn ? 'প্রস্তাবিত জিজ্ঞাসা:' : 'Suggested Inquiries:'}</span>
       </div>
 
       <div className="flex flex-wrap gap-2">
