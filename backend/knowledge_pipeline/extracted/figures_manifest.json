@@ -1,0 +1,880 @@
+[
+  {
+    "figure_id": "who_dengue_lab_guidance_2025__fig_000",
+    "doc_id": "who_dengue_lab_guidance_2025",
+    "source_pdf": "Laboratory testing for dengue virus_interim guidance.pdf",
+    "source": "https://www.who.int/publications/i/item/B09394",
+    "page": 4,
+    "bbox": {
+      "l": 83.30035252923133,
+      "t": 749.6352509139326,
+      "r": 492.93099471738674,
+      "b": 256.17707383833135,
+      "coord_origin": "BOTTOMLEFT"
+    },
+    "section_path": "Dengue virus and disease",
+    "caption": "Fig. 1. Progression of diagnostic markers in primary and secondary DENV infections in relation to days from symptom onset",
+    "image_path": "extracted\\who_dengue_lab_guidance_2025\\picture-000.png",
+    "width": 819,
+    "height": 986,
+    "is_relevant": true,
+    "review_status": "pending_review",
+    "figure_type": "clinical_chart",
+    "description": "Fig. 1 depicts the progression of diagnostic markers (Viral RNA, NS1 Antigen, IgM, and IgG) in relation to days from symptom onset (-4 to 10 days) in primary and secondary DENV infections.\n\n- Primary DENV Infection (Top Panel):\n  - Mosquito bite occurs at day -4.\n  - Viral RNA rises before symptom onset (around day -2), peaking around day 2 and clearing around day 7-8.\n  - NS1 Antigen rises at symptom onset (day 0), peaks around day 4, and decreases towards day 9.\n  - IgM appears around day 3 and continues to rise past day 10.\n  - IgG appears around day 4 and continues to rise past day 10.\n  - A shaded area highlights the 'Risk of shock and haemorrhage' between days ~3 and ~7.\n\n- Secondary DENV Infection (Bottom Panel):\n  - Mosquito bite occurs at day -4.\n  - Viral RNA rises around day -2, peaks lower and earlier (around day 1), and clears around day 5.\n  - Baseline IgG is present and rises rapidly starting around day -2, peaking high and staying elevated.\n  - NS1 Antigen shows a lower peak around day 3-4 compared to primary infection.\n  - IgM shows a significantly lower and slower response, peaking modestly around day 8.\n  - The 'Risk of shock and haemorrhage' window remains highlighted between days ~3 and ~7.",
+    "structured_logic": {
+      "nodes": [
+        {
+          "id": "n1",
+          "label": "Primary DENV Infection"
+        },
+        {
+          "id": "n2",
+          "label": "Secondary DENV Infection"
+        },
+        {
+          "id": "n3",
+          "label": "Mosquito bite (Day -4)"
+        },
+        {
+          "id": "n4",
+          "label": "Symptom onset (Day 0)"
+        },
+        {
+          "id": "n5",
+          "label": "Risk of shock and haemorrhage (Days ~3 to ~7)"
+        }
+      ],
+      "edges": [
+        {
+          "from": "n3",
+          "to": "n4",
+          "condition": "Incubation phase (Day -4 to Day 0)"
+        },
+        {
+          "from": "n1",
+          "to": "n5",
+          "condition": "Critical period during primary infection"
+        },
+        {
+          "from": "n2",
+          "to": "n5",
+          "condition": "Critical period during secondary infection"
+        }
+      ]
+    },
+    "ambiguous_elements": [],
+    "vlm_model": "gemini-3.5-flash",
+    "extracted_at": "2026-11-23T00:20:12.965182+00:00"
+  },
+  {
+    "figure_id": "who_dengue_lab_guidance_2025__fig_001",
+    "doc_id": "who_dengue_lab_guidance_2025",
+    "source_pdf": "Laboratory testing for dengue virus_interim guidance.pdf",
+    "source": "https://www.who.int/publications/i/item/B09394",
+    "page": 15,
+    "bbox": {
+      "l": 125.2291818476516,
+      "t": 520.9739224222683,
+      "r": 713.6832227722313,
+      "b": 134.42859984532305,
+      "coord_origin": "BOTTOMLEFT"
+    },
+    "section_path": "Proposed algorithm for dengue diagnosis in suspected cases",
+    "caption": "Fig. 2. Proposed algorithm for dengue diagnostics in suspected dengue cases",
+    "image_path": "extracted\\who_dengue_lab_guidance_2025\\picture-001.png",
+    "width": 1177,
+    "height": 774,
+    "is_relevant": true,
+    "review_status": "pending_review",
+    "figure_type": "flowchart",
+    "description": "A diagnostic flowchart for suspected dengue cases based on duration of symptoms. Cases \u2264 7 days post symptom onset can undergo RNA NAAT, NS1 ELISA/RDT, or NS1&IgM ELISA/RDT. Cases > 7 days post symptom onset undergo NS1&IgM ELISA/RDT or IgM ELISA/RDT. Diagnostic outcomes are classified as 'Dengue confirmed', 'Probable recent dengue', or 'Dengue not confirmed', with specified follow-up testing (NAAT or seroconversion using convalescent serum collected within 10\u201314 days) or proceeding to differential diagnosis.",
+    "structured_logic": {
+      "nodes": [
+        {
+          "id": "n1",
+          "label": "Suspected Dengue Case"
+        },
+        {
+          "id": "n2",
+          "label": "\u2264 7 days post symptom onset"
+        },
+        {
+          "id": "n3",
+          "label": "> 7 days post symptom onset"
+        },
+        {
+          "id": "n4",
+          "label": "RNA NAAT\u00aa"
+        },
+        {
+          "id": "n5",
+          "label": "NS1 ELISA/RDT"
+        },
+        {
+          "id": "n6",
+          "label": "NS1&IgM ELISA/RDT"
+        },
+        {
+          "id": "n7",
+          "label": "IgM ELISA/RDT"
+        },
+        {
+          "id": "n8",
+          "label": "Positive = Dengue confirmed"
+        },
+        {
+          "id": "n9",
+          "label": "Negative = Dengue not confirmed"
+        },
+        {
+          "id": "n10",
+          "label": "Positive = Dengue confirmed"
+        },
+        {
+          "id": "n11",
+          "label": "Negative = Dengue not confirmed\u1d47"
+        },
+        {
+          "id": "n12",
+          "label": "NS1 positive & IgM positive/negative = Dengue confirmed"
+        },
+        {
+          "id": "n13",
+          "label": "NS1 negative & IgM positive = Probable recent dengue"
+        },
+        {
+          "id": "n14",
+          "label": "NS1 negative & IgM negative = Dengue not confirmed\u1d9c"
+        },
+        {
+          "id": "n15",
+          "label": "Positive = Probable recent dengue\u1d48"
+        },
+        {
+          "id": "n16",
+          "label": "Negative = Dengue not confirmed\u1d49"
+        },
+        {
+          "id": "n17",
+          "label": "Confirm by NAAT (if \u2264 7 days post symptom onset) or seroconversion using convalescent serum collected within 10\u201314 days"
+        },
+        {
+          "id": "n18",
+          "label": "Differential diagnosis"
+        },
+        {
+          "id": "n19",
+          "label": "Confirm by seroconversion using convalescent serum collected within 10\u201314 days"
+        },
+        {
+          "id": "n20",
+          "label": "Differential diagnosis"
+        }
+      ],
+      "edges": [
+        {
+          "from": "n1",
+          "to": "n2",
+          "condition": "\u2264 7 days post symptom onset"
+        },
+        {
+          "from": "n1",
+          "to": "n3",
+          "condition": "> 7 days post symptom onset"
+        },
+        {
+          "from": "n2",
+          "to": "n4",
+          "condition": ""
+        },
+        {
+          "from": "n2",
+          "to": "n5",
+          "condition": ""
+        },
+        {
+          "from": "n2",
+          "to": "n6",
+          "condition": ""
+        },
+        {
+          "from": "n3",
+          "to": "n6",
+          "condition": ""
+        },
+        {
+          "from": "n3",
+          "to": "n7",
+          "condition": ""
+        },
+        {
+          "from": "n4",
+          "to": "n8",
+          "condition": "Positive"
+        },
+        {
+          "from": "n4",
+          "to": "n9",
+          "condition": "Negative"
+        },
+        {
+          "from": "n5",
+          "to": "n10",
+          "condition": "Positive"
+        },
+        {
+          "from": "n5",
+          "to": "n11",
+          "condition": "Negative"
+        },
+        {
+          "from": "n6",
+          "to": "n12",
+          "condition": ""
+        },
+        {
+          "from": "n6",
+          "to": "n13",
+          "condition": ""
+        },
+        {
+          "from": "n6",
+          "to": "n14",
+          "condition": ""
+        },
+        {
+          "from": "n7",
+          "to": "n15",
+          "condition": "Positive"
+        },
+        {
+          "from": "n7",
+          "to": "n16",
+          "condition": "Negative"
+        },
+        {
+          "from": "n13",
+          "to": "n17",
+          "condition": ""
+        },
+        {
+          "from": "n14",
+          "to": "n17",
+          "condition": ""
+        },
+        {
+          "from": "n17",
+          "to": "n18",
+          "condition": ""
+        },
+        {
+          "from": "n15",
+          "to": "n19",
+          "condition": ""
+        },
+        {
+          "from": "n16",
+          "to": "n20",
+          "condition": ""
+        }
+      ]
+    },
+    "ambiguous_elements": [],
+    "vlm_model": "gemini-3.5-flash",
+    "extracted_at": "2026-11-23T00:20:42.560907+00:00"
+  },
+  {
+    "figure_id": "who_dengue_lab_guidance_2025__fig_002",
+    "doc_id": "who_dengue_lab_guidance_2025",
+    "source_pdf": "Laboratory testing for dengue virus_interim guidance.pdf",
+    "source": "https://www.who.int/publications/i/item/B09394",
+    "page": 16,
+    "bbox": {
+      "l": 127.79411506396812,
+      "t": 554.3885141288413,
+      "r": 480.40547169934985,
+      "b": 312.70051152390147,
+      "coord_origin": "BOTTOMLEFT"
+    },
+    "section_path": "Testing across the tiered laboratory network",
+    "caption": "Fig. 3 Proposed dengue diagnostic test menu in a tiered laboratory network (Adapted from (2))",
+    "image_path": "extracted\\who_dengue_lab_guidance_2025\\picture-002.png",
+    "width": 705,
+    "height": 483,
+    "is_relevant": true,
+    "review_status": "pending_review",
+    "figure_type": "diagram",
+    "description": "A four-tier pyramid diagram illustrating the proposed dengue diagnostic test menu across a tiered laboratory network:\n1. Central or national reference laboratory (Top tier): Test menu includes NAAT, ELISA, virus culture, NGS, PRNT.\n2. Regional or provincial laboratory (Second tier): Test menu includes NAAT, ELISA, RDT.\n3. District hospital laboratory (Third tier): Test menu includes NAAT, ELISA, RDT.\n4. Primary health care centres (Bottom tier): Test menu includes RDT.",
+    "structured_logic": {
+      "nodes": [
+        {
+          "id": "n1",
+          "label": "Central or national reference laboratory | Test menu: NAAT, ELISA, virus culture, NGS, PRNT"
+        },
+        {
+          "id": "n2",
+          "label": "Regional or provincial laboratory | Test menu: NAAT, ELISA, RDT"
+        },
+        {
+          "id": "n3",
+          "label": "District hospital laboratory | Test menu: NAAT, ELISA, RDT"
+        },
+        {
+          "id": "n4",
+          "label": "Primary health care centres | Test menu: RDT"
+        }
+      ],
+      "edges": [
+        {
+          "from": "n1",
+          "to": "n2",
+          "condition": "tiered referral / hierarchy level below"
+        },
+        {
+          "from": "n2",
+          "to": "n3",
+          "condition": "tiered referral / hierarchy level below"
+        },
+        {
+          "from": "n3",
+          "to": "n4",
+          "condition": "tiered referral / hierarchy level below"
+        }
+      ]
+    },
+    "ambiguous_elements": [],
+    "vlm_model": "gemini-3.5-flash",
+    "extracted_at": "2026-11-23T00:21:01.368392+00:00"
+  },
+  {
+    "figure_id": "ncvbdc_dengue_guideline_2023__fig_000",
+    "doc_id": "ncvbdc_dengue_guideline_2023",
+    "source_pdf": "National Guidelines for Clinical Management of Dengue Fever.pdf",
+    "source": "https://ncvbdc.mohfw.gov.in/Doc/National%20Guidelines%20for%20Clinical%20Management%20of%20Dengue%20Fever%202023.pdf",
+    "page": 5,
+    "bbox": {
+      "l": 316.1781810970434,
+      "t": 753.8833423774691,
+      "r": 526.8326995890571,
+      "b": 549.5849724234041,
+      "coord_origin": "BOTTOMLEFT"
+    },
+    "section_path": "1.2 National Scenario",
+    "caption": "Figure 1: Areas reported Dengue cases since 1991",
+    "image_path": "extracted\\ncvbdc_dengue_guideline_2023\\picture-000.png",
+    "width": 422,
+    "height": 409,
+    "is_relevant": true,
+    "review_status": "pending_review",
+    "figure_type": "map",
+    "description": "A map of India displaying district-level geographic distribution of reported Dengue cases since 1991. The vast majority of districts across the peninsular, central, western, eastern, and north-eastern regions are shaded in red, indicating reported cases. Northernmost areas (high-altitude regions of Jammu & Kashmir and Ladakh) are left unshaded (white).",
+    "structured_logic": {
+      "nodes": [],
+      "edges": []
+    },
+    "ambiguous_elements": [
+      "No text labels, district names, or color legend key are printed directly on the map graphic."
+    ],
+    "vlm_model": "gemini-3.5-flash",
+    "extracted_at": "2026-11-23T01:33:12.540171+00:00"
+  },
+  {
+    "figure_id": "ncvbdc_dengue_guideline_2023__fig_001",
+    "doc_id": "ncvbdc_dengue_guideline_2023",
+    "source_pdf": "National Guidelines for Clinical Management of Dengue Fever.pdf",
+    "source": "https://ncvbdc.mohfw.gov.in/Doc/National%20Guidelines%20for%20Clinical%20Management%20of%20Dengue%20Fever%202023.pdf",
+    "page": 5,
+    "bbox": {
+      "l": 67.8530454930043,
+      "t": 277.65951783529806,
+      "r": 524.9160248089476,
+      "b": 97.48376955731487,
+      "coord_origin": "BOTTOMLEFT"
+    },
+    "section_path": "1.2 National Scenario",
+    "caption": "Figure 2: Seasonal trend of Dengue Cases in India 2018-2022",
+    "image_path": "extracted\\ncvbdc_dengue_guideline_2023\\picture-001.png",
+    "width": 914,
+    "height": 360,
+    "is_relevant": true,
+    "review_status": "pending_review",
+    "figure_type": "clinical_chart",
+    "description": "Line chart displaying the 'Seasonal trend of Dengue Cases in India 2018-2022'. The vertical axis (y-axis) indicates 'No. of Cases' ranging from -5000 to 75000 in increments of 10000. The horizontal axis (x-axis) lists the months from Jan to Dec. The chart compares five years: 2018 (orange line with triangles), 2019 (blue line with x-markers), 2020 (maroon/brown line with asterisks), 2021 (green line with circles), and 2022 (purple line with plus markers). For most years, case counts remain low from January to June (<5000), begin rising in July/August, peak sharply in October or November, and decline by December. The highest peak occurred in October 2022 (~68,000 cases), followed by October 2021 (~63,000 cases), November 2019 (~59,000 cases), October 2018 (~30,000 cases), and October 2020 (~10,000 cases).",
+    "structured_logic": {
+      "nodes": [],
+      "edges": []
+    },
+    "ambiguous_elements": [],
+    "vlm_model": "gemini-3.5-flash",
+    "extracted_at": "2026-11-23T01:33:29.662837+00:00"
+  },
+  {
+    "figure_id": "ncvbdc_dengue_guideline_2023__fig_002",
+    "doc_id": "ncvbdc_dengue_guideline_2023",
+    "source_pdf": "National Guidelines for Clinical Management of Dengue Fever.pdf",
+    "source": "https://ncvbdc.mohfw.gov.in/Doc/National%20Guidelines%20for%20Clinical%20Management%20of%20Dengue%20Fever%202023.pdf",
+    "page": 7,
+    "bbox": {
+      "l": 382.233108934236,
+      "t": 442.1072867548932,
+      "r": 527.4882211488044,
+      "b": 300.4651214360682,
+      "coord_origin": "BOTTOMLEFT"
+    },
+    "section_path": "2.1 Dengue virus",
+    "caption": "Figure 3: Dengue virus under electron microscope",
+    "image_path": "extracted\\ncvbdc_dengue_guideline_2023\\picture-002.png",
+    "width": 291,
+    "height": 283,
+    "is_relevant": false,
+    "review_status": "skipped_decorative",
+    "figure_type": "decorative",
+    "description": "A 3D graphical surface representation/rendering of a spherical dengue virus particle against a black background.",
+    "structured_logic": {
+      "nodes": [],
+      "edges": []
+    },
+    "ambiguous_elements": [],
+    "vlm_model": "gemini-3.5-flash",
+    "extracted_at": "2026-11-23T01:33:40.538512+00:00"
+  },
+  {
+    "figure_id": "ncvbdc_dengue_guideline_2023__fig_003",
+    "doc_id": "ncvbdc_dengue_guideline_2023",
+    "source_pdf": "National Guidelines for Clinical Management of Dengue Fever.pdf",
+    "source": "https://ncvbdc.mohfw.gov.in/Doc/National%20Guidelines%20for%20Clinical%20Management%20of%20Dengue%20Fever%202023.pdf",
+    "page": 15,
+    "bbox": {
+      "l": 76.57245655443843,
+      "t": 731.5933252789372,
+      "r": 527.9999280604419,
+      "b": 79.95376751556944,
+      "coord_origin": "BOTTOMLEFT"
+    },
+    "section_path": "Mechanisms postulated for thrombocytopenia:",
+    "caption": "Figure 4: Pathophysiology of Dengue",
+    "image_path": "extracted\\ncvbdc_dengue_guideline_2023\\picture-003.png",
+    "width": 903,
+    "height": 1303,
+    "is_relevant": true,
+    "review_status": "vlm_error",
+    "vlm_model": "gemini-3.5-flash",
+    "error": "503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+    "extracted_at": "2026-11-23T11:26:29.275506+00:00"
+  },
+  {
+    "figure_id": "ncvbdc_dengue_guideline_2023__fig_004",
+    "doc_id": "ncvbdc_dengue_guideline_2023",
+    "source_pdf": "National Guidelines for Clinical Management of Dengue Fever.pdf",
+    "source": "https://ncvbdc.mohfw.gov.in/Doc/National%20Guidelines%20for%20Clinical%20Management%20of%20Dengue%20Fever%202023.pdf",
+    "page": 17,
+    "bbox": {
+      "l": 67.51583124813617,
+      "t": 452.8281877597795,
+      "r": 527.7795708409251,
+      "b": 177.4440603974366,
+      "coord_origin": "BOTTOMLEFT"
+    },
+    "section_path": "Confirmed Dengue Fever:",
+    "caption": "Figure 5: Clinical phases of dengue infection",
+    "image_path": "extracted\\ncvbdc_dengue_guideline_2023\\picture-004.png",
+    "width": 921,
+    "height": 551,
+    "is_relevant": true,
+    "review_status": "vlm_error",
+    "vlm_model": "gemini-3.5-flash",
+    "error": "503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+    "extracted_at": "2026-11-23T11:26:46.776885+00:00"
+  },
+  {
+    "figure_id": "ncvbdc_dengue_guideline_2023__fig_005",
+    "doc_id": "ncvbdc_dengue_guideline_2023",
+    "source_pdf": "National Guidelines for Clinical Management of Dengue Fever.pdf",
+    "source": "https://ncvbdc.mohfw.gov.in/Doc/National%20Guidelines%20for%20Clinical%20Management%20of%20Dengue%20Fever%202023.pdf",
+    "page": 20,
+    "bbox": {
+      "l": 66.25101862196954,
+      "t": 666.8172078197113,
+      "r": 523.2919805129902,
+      "b": 225.5343138258313,
+      "coord_origin": "BOTTOMLEFT"
+    },
+    "section_path": "\u00b7 Convalescent phase (Recovery phase)",
+    "caption": "Figure 6: Approach to diagnosis of dengue",
+    "image_path": "extracted\\ncvbdc_dengue_guideline_2023\\picture-005.png",
+    "width": 914,
+    "height": 883,
+    "is_relevant": true,
+    "review_status": "vlm_error",
+    "vlm_model": "gemini-3.5-flash",
+    "error": "503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+    "extracted_at": "2026-11-23T11:26:53.140987+00:00"
+  },
+  {
+    "figure_id": "ncvbdc_dengue_guideline_2023__fig_006",
+    "doc_id": "ncvbdc_dengue_guideline_2023",
+    "source_pdf": "National Guidelines for Clinical Management of Dengue Fever.pdf",
+    "source": "https://ncvbdc.mohfw.gov.in/Doc/National%20Guidelines%20for%20Clinical%20Management%20of%20Dengue%20Fever%202023.pdf",
+    "page": 21,
+    "bbox": {
+      "l": 70.62634142933275,
+      "t": 404.55101364841664,
+      "r": 524.6495590762963,
+      "b": 98.03715476256673,
+      "coord_origin": "BOTTOMLEFT"
+    },
+    "section_path": "\u00b7 Convalescent phase (Recovery phase)",
+    "caption": "Figure 7: Clinical features and lab parameters of Dengue fever",
+    "image_path": "extracted\\ncvbdc_dengue_guideline_2023\\picture-006.png",
+    "width": 908,
+    "height": 613,
+    "is_relevant": true,
+    "review_status": "pending_review",
+    "figure_type": "flowchart",
+    "description": "Flowchart representing the clinical features and laboratory parameters of Dengue virus infection, categorized under Clinical manifestations into Symptoms, Sign, and Laboratory.\n\n1. Dengue virus infection -> Clinical manifestations -> Symptoms, Sign, Laboratory.\n2. Symptoms:\n   - Clinical symptoms & Warming symptoms:\n     - Clinical symptoms: Fever, Rash, Headache, Retro-orbital or ocular pain, Myalgia and/or bone pain, Arthralgia.\n     - Warming symptoms: Recurrent vomiting, Abdominal pain, Lethargy, Dyspnea, Altered sensorium.\n   - Hemorrhagic symptoms: Petechiae, Purpura, Ecchymosis, Epistaxis, Hypermenorrhea, Hematemesis or melena.\n3. Sign:\n   - Clinical findings: Hepatomegaly, Abdominal tenderness, Pleural effusion, Ascites, Positive tourniquet test.\n   - Plasma leakage: Pleural effusion, Ascites, Hypoproteinemia, Hypovolemia, Shock (MAP <65mm Hg).\n4. Laboratory:\n   - Lab parameters:\n     - Haemoconcentration: Haematocrit increase of \u2265 20% from baseline.\n     - Thrombocytopenia: Platelet count <1 lac cells per mm\u00b3.\n     - Leucopenia: Leucocyte count <4000 cells per mm\u00b3.\n     - Coagulopathy: Raised INR or aPTT (>1.5xULN).\n     - Transaminitis.\n   - Radiological Investigation:\n     - Chest X-ray/Lung Scan: Pleural effusion, Pulmonary edema.\n     - Ultrasound abdomen: Acalculous cholecystitis, Ascites.",
+    "structured_logic": {
+      "nodes": [
+        {
+          "id": "n1",
+          "label": "Dengue virus infection"
+        },
+        {
+          "id": "n2",
+          "label": "Clinical manifestations"
+        },
+        {
+          "id": "n3",
+          "label": "Symptoms"
+        },
+        {
+          "id": "n4",
+          "label": "Sign"
+        },
+        {
+          "id": "n5",
+          "label": "Laboratory"
+        },
+        {
+          "id": "n6",
+          "label": "Clinical symptoms: Fever, Rash, Headache, Retro-orbital or ocular pain, Myalgia and/or bone pain, Arthralgia | Warming symptoms: Recurrent vomiting, Abdominal pain, Lethargy, Dyspnea, Altered sensorium"
+        },
+        {
+          "id": "n7",
+          "label": "Hemorrhagic symptoms: Petechiae, Purpura, Ecchymosis, Epistaxis, Hypermenorrhea, Hematemesis or melena"
+        },
+        {
+          "id": "n8",
+          "label": "Clinical findings: Hepatomegaly, Abdominal tenderness, Pleural effusion, Ascites, Positive tourniquet test"
+        },
+        {
+          "id": "n9",
+          "label": "Plasma leakage: Pleural effusion, Ascites, Hypoproteinemia, Hypovolemia, Shock (MAP <65mm Hg)"
+        },
+        {
+          "id": "n10",
+          "label": "Haemoconcentration (Haematocrit increase of \u2265 20% from baseline), Thrombocytopenia (Platelet count <1 lac cells per mm\u00b3), Leucopenia (Leucocyte count <4000 cells per mm\u00b3), Coagulopathy (Raised INR or aPTT (>1.5xULN)), Transaminitis"
+        },
+        {
+          "id": "n11",
+          "label": "Radiological Investigation: Chest X-ray/Lung Scan (Pleural effusion, Pulmonary edema), Ultrasound abdomen (Acalculous cholecystitis, Ascites)"
+        }
+      ],
+      "edges": [
+        {
+          "from": "n1",
+          "to": "n2",
+          "condition": null
+        },
+        {
+          "from": "n2",
+          "to": "n3",
+          "condition": null
+        },
+        {
+          "from": "n2",
+          "to": "n4",
+          "condition": null
+        },
+        {
+          "from": "n2",
+          "to": "n5",
+          "condition": null
+        },
+        {
+          "from": "n3",
+          "to": "n6",
+          "condition": null
+        },
+        {
+          "from": "n3",
+          "to": "n7",
+          "condition": null
+        },
+        {
+          "from": "n4",
+          "to": "n8",
+          "condition": null
+        },
+        {
+          "from": "n4",
+          "to": "n9",
+          "condition": null
+        },
+        {
+          "from": "n5",
+          "to": "n10",
+          "condition": null
+        },
+        {
+          "from": "n5",
+          "to": "n11",
+          "condition": null
+        }
+      ]
+    },
+    "ambiguous_elements": [],
+    "vlm_model": "gemini-3.5-flash",
+    "extracted_at": "2026-11-23T11:28:23.234490+00:00"
+  },
+  {
+    "figure_id": "ncvbdc_dengue_guideline_2023__fig_007",
+    "doc_id": "ncvbdc_dengue_guideline_2023",
+    "source_pdf": "National Guidelines for Clinical Management of Dengue Fever.pdf",
+    "source": "https://ncvbdc.mohfw.gov.in/Doc/National%20Guidelines%20for%20Clinical%20Management%20of%20Dengue%20Fever%202023.pdf",
+    "page": 22,
+    "bbox": {
+      "l": 73.2090814321633,
+      "t": 474.68489150077846,
+      "r": 461.36041014600914,
+      "b": 87.48150115206579,
+      "coord_origin": "BOTTOMLEFT"
+    },
+    "section_path": "Box 4: Tourniquet test",
+    "caption": "Figure 8: Clinical case classification of dengue:",
+    "image_path": "extracted\\ncvbdc_dengue_guideline_2023\\picture-007.png",
+    "width": 777,
+    "height": 774,
+    "is_relevant": true,
+    "review_status": "vlm_error",
+    "vlm_model": "gemini-3.5-flash",
+    "error": "503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+    "extracted_at": "2026-11-23T11:30:06.303204+00:00"
+  },
+  {
+    "figure_id": "ncvbdc_dengue_guideline_2023__fig_008",
+    "doc_id": "ncvbdc_dengue_guideline_2023",
+    "source_pdf": "National Guidelines for Clinical Management of Dengue Fever.pdf",
+    "source": "https://ncvbdc.mohfw.gov.in/Doc/National%20Guidelines%20for%20Clinical%20Management%20of%20Dengue%20Fever%202023.pdf",
+    "page": 25,
+    "bbox": {
+      "l": 65.5777489440713,
+      "t": 537.5173402095265,
+      "r": 260.6319384130695,
+      "b": 419.775538668921,
+      "coord_origin": "BOTTOMLEFT"
+    },
+    "section_path": "Box 5: Risk factors for severe disease",
+    "caption": "Figure 9: Dengue patient with maculopapular rash",
+    "image_path": "extracted\\ncvbdc_dengue_guideline_2023\\picture-008.png",
+    "width": 390,
+    "height": 236,
+    "is_relevant": true,
+    "review_status": "vlm_error",
+    "vlm_model": "gemini-3.5-flash",
+    "error": "503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+    "extracted_at": "2026-11-23T11:30:54.874207+00:00"
+  },
+  {
+    "figure_id": "ncvbdc_dengue_guideline_2023__fig_009",
+    "doc_id": "ncvbdc_dengue_guideline_2023",
+    "source_pdf": "National Guidelines for Clinical Management of Dengue Fever.pdf",
+    "source": "https://ncvbdc.mohfw.gov.in/Doc/National%20Guidelines%20for%20Clinical%20Management%20of%20Dengue%20Fever%202023.pdf",
+    "page": 25,
+    "bbox": {
+      "l": 270.40953527668177,
+      "t": 536.9877620906084,
+      "r": 455.686562436507,
+      "b": 421.2356659869537,
+      "coord_origin": "BOTTOMLEFT"
+    },
+    "section_path": "Box 5: Risk factors for severe disease",
+    "caption": "",
+    "image_path": "extracted\\ncvbdc_dengue_guideline_2023\\picture-009.png",
+    "width": 370,
+    "height": 232,
+    "is_relevant": false,
+    "review_status": "skipped_decorative",
+    "figure_type": "decorative",
+    "description": "Clinical photograph of a human forearm depicting a macular skin rash with pale areas characteristic of dengue infection (islands of white in a sea of red). No textual labels, numbers, or flowchart structures are present in the image.",
+    "structured_logic": {
+      "nodes": [],
+      "edges": []
+    },
+    "ambiguous_elements": [],
+    "vlm_model": "gemini-3.5-flash",
+    "extracted_at": "2026-11-23T11:34:31.228330+00:00"
+  },
+  {
+    "figure_id": "ncvbdc_dengue_guideline_2023__fig_010",
+    "doc_id": "ncvbdc_dengue_guideline_2023",
+    "source_pdf": "National Guidelines for Clinical Management of Dengue Fever.pdf",
+    "source": "https://ncvbdc.mohfw.gov.in/Doc/National%20Guidelines%20for%20Clinical%20Management%20of%20Dengue%20Fever%202023.pdf",
+    "page": 39,
+    "bbox": {
+      "l": 110.40848905678563,
+      "t": 310.09531647923154,
+      "r": 474.4372967877483,
+      "b": 88.96607569575735,
+      "coord_origin": "BOTTOMLEFT"
+    },
+    "section_path": "Monitoring of the patient",
+    "caption": "Figure 11: Algorithms for hospital management for moderate dengue patients with warning signs:",
+    "image_path": "extracted\\ncvbdc_dengue_guideline_2023\\picture-010.png",
+    "width": 728,
+    "height": 442,
+    "is_relevant": true,
+    "review_status": "pending_review",
+    "figure_type": "flowchart",
+    "description": "Algorithm for hospital management of dengue with warning signs (systolic pressure maintained with signs of reduced perfusion, high Hct \u2265 20% rise from baseline). Initial management starts with isotonic crystalloid solution (7-10 mL/kg for 1 hour). If improvement occurs (monitored by BP, pulse pressure, Hct, urine output, capillary refilling time, pulse rate), IV crystalloid is gradually reduced (5-7 mL/kg/h for 1-2 hours, 3-5 mL/kg/h for 2-4 hours, 2-3 mL/kg/h for 2-4 hours) and stopped at 24-48 hours as clinical improvement is noted. If no improvement, patients with Hct > 45% (suspect persistent capillary leakage) receive IV crystalloid/colloid solution (10 mL/kg for 1 hour), while those with Hct < 45% (suspect severe overt bleed, check Hb) receive blood transfusion (10 mL/kg whole blood / 5 mL/kg packed RBC). If improvement follows these second-line interventions, IV crystalloids are reduced to 7-10 mL/kg/h for 1-2 hours before feeding into the gradual reduction regimen. If no improvement occurs, refractory hypotension is managed with inotropes and managed as severe dengue with decompensated shock (Group C).",
+    "structured_logic": {
+      "nodes": [
+        {
+          "id": "n1",
+          "label": "Dengue with warning signs\n(Systolic pressure maintained with signs of reduced perfusion), high Hct (\u2265 20% rise from baseline)"
+        },
+        {
+          "id": "n2",
+          "label": "Start isotonic crystalloid solution\n(7-10 ml/kg for 1 hour)"
+        },
+        {
+          "id": "n3",
+          "label": "IMPROVEMENT\nBP, pulse pressure, Hct, urine output, capillary refilling time, pulse rate"
+        },
+        {
+          "id": "n4",
+          "label": "IV crystalloid, reduce gradually\n5-7 mL/kg/h for 1-2 hours\n3-5 mL/kg/h for 2-4 hours\n2-3 mL/kg/h for 2-4 hours"
+        },
+        {
+          "id": "n5",
+          "label": "As clinical improvement is noted, reduce fluid accordingly"
+        },
+        {
+          "id": "n6",
+          "label": "Stop IV fluids at 24-48 hours"
+        },
+        {
+          "id": "n7",
+          "label": "Hct > 45%\n(suspect persistent capillary leakage)"
+        },
+        {
+          "id": "n8",
+          "label": "Hct < 45%\n(suspect severe overt bleed), check Hb"
+        },
+        {
+          "id": "n9",
+          "label": "IV crystalloid/colloid solution\n(10 mL/kg for 1 hour)"
+        },
+        {
+          "id": "n10",
+          "label": "Blood transfusion\n(10 mL/kg whole blood)/\n(5 mL/kg packed RBC)"
+        },
+        {
+          "id": "n11",
+          "label": "IMPROVEMENT"
+        },
+        {
+          "id": "n12",
+          "label": "Reduce IV crystalloids 7-10 mL/kg/h for 1-2 hours"
+        },
+        {
+          "id": "n13",
+          "label": "Refractory hypotension consider inotropes"
+        },
+        {
+          "id": "n14",
+          "label": "Manage as severe dengue with de-compensated shock (Group C)"
+        }
+      ],
+      "edges": [
+        {
+          "from": "n1",
+          "to": "n2",
+          "condition": ""
+        },
+        {
+          "from": "n2",
+          "to": "n3",
+          "condition": ""
+        },
+        {
+          "from": "n3",
+          "to": "n4",
+          "condition": "YES"
+        },
+        {
+          "from": "n4",
+          "to": "n5",
+          "condition": ""
+        },
+        {
+          "from": "n5",
+          "to": "n6",
+          "condition": ""
+        },
+        {
+          "from": "n3",
+          "to": "n7",
+          "condition": "NO"
+        },
+        {
+          "from": "n3",
+          "to": "n8",
+          "condition": "NO"
+        },
+        {
+          "from": "n7",
+          "to": "n9",
+          "condition": ""
+        },
+        {
+          "from": "n8",
+          "to": "n10",
+          "condition": ""
+        },
+        {
+          "from": "n9",
+          "to": "n11",
+          "condition": ""
+        },
+        {
+          "from": "n10",
+          "to": "n11",
+          "condition": ""
+        },
+        {
+          "from": "n11",
+          "to": "n12",
+          "condition": "YES"
+        },
+        {
+          "from": "n12",
+          "to": "n4",
+          "condition": ""
+        },
+        {
+          "from": "n11",
+          "to": "n13",
+          "condition": "NO"
+        },
+        {
+          "from": "n13",
+          "to": "n14",
+          "condition": ""
+        }
+      ]
+    },
+    "ambiguous_elements": [],
+    "vlm_model": "gemini-3.5-flash",
+    "extracted_at": "2026-11-23T11:34:46.133577+00:00"
+  }
+]
