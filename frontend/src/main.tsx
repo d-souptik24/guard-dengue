@@ -14,6 +14,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SettingsProvider } from '@/store/settings'
 import AppShell from '@/components/layout/AppShell'
 import ChatPage from '@/pages/ChatPage'
+import GuidesPage from '@/pages/GuidesPage'
 import AboutPage from '@/pages/AboutPage'
 import NotFoundPage from '@/pages/NotFoundPage'
 
@@ -34,6 +35,7 @@ createRoot(document.getElementById('root')!).render(
           <AppShell>
             <Routes>
               <Route path="/"       element={<ChatPage />} />
+              <Route path="/guides" element={<GuidesPage />} />
               <Route path="/about"  element={<AboutPage />} />
               <Route path="*"       element={<NotFoundPage />} />
             </Routes>
